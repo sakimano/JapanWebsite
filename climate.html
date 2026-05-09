@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geography of Japan | Climate & Biodiversity</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .seasonal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .season-card {
+      text-align: center;
+    }
+    .season-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border: var(--border-gold);
+      margin-bottom: 20px;
+      transition: transform 0.5s ease;
+    }
+    .season-card img:hover {
+      transform: scale(1.02);
+    }
+    .season-card h3 {
+      font-size: 2rem;
+      color: var(--indigo);
+      margin-bottom: 10px;
+    }
+    @media (max-width: 800px) {
+      .seasonal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">日本</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="geographic.html">Tectonics</a></li>
+        <li><a href="water.html">Landforms</a></li>
+        <li><a href="ocean.html">Oceans</a></li>
+        <li><a href="climate.html" class="active">Climate</a></li>
+        <li><a href="references.html">References</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main style="padding-top: 150px;">
+    
+    <section>
+      <div class="section-header fade-in">
+        <h2>Climate Zones & Biomes</h2>
+        <div class="divider"></div>
+      </div>
+      
+      <div class="split-layout fade-in">
+        <div class="split-text" style="text-align: center;">
+          <p style="max-width: 800px; margin: 0 auto 30px auto;">Due to its extreme length from north to south, Japan's climate ranges dramatically from the humid continental climate of Hokkaido in the north to the humid subtropical and tropical climates of Okinawa in the south. This vast latitudinal spread creates incredibly diverse biomes, ranging from subalpine coniferous forests to dense subtropical rainforests.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card fade-in">
+          <h3>Typhoons</h3>
+          <p>Japan is frequently struck by typhoons in late summer and early autumn. These massive storm systems bring extreme winds and torrential rains, significantly impacting both human settlements and the physical geography through erosion.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>Flora & Fauna</h3>
+          <p>Because of its isolation from the mainland, Japan has a high degree of endemism. Native wildlife includes the Japanese macaque (snow monkey), the sika deer, and the red-crowned crane. Forests cover over 60% of the landmass.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>The Four Seasons</h2>
+        <div class="divider"></div>
+        <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">The changing of the four distinct seasons (Shiki) is a fundamental aspect of Japanese culture, aesthetics, and poetry.</p>
+      </div>
+
+      <div class="seasonal-grid">
+        
+        <div class="season-card fade-in">
+          <img src="assets/images/spring.png" alt="Spring cherry blossoms">
+          <h3 style="color: var(--bg-cream);">Spring (Haru)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8;">Defined by the brief, spectacular blooming of the sakura (cherry blossoms), moving in a wave from south to north.</p>
+        </div>
+
+        <div class="season-card fade-in">
+          <img src="assets/images/summer.png" alt="Summer bamboo forest">
+          <h3 style="color: var(--bg-cream);">Summer (Natsu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8;">Hot and highly humid, beginning with a rainy season (tsuyu) and characterized by lush, vibrant green forests.</p>
+        </div>
+
+        <div class="season-card fade-in">
+          <img src="assets/images/autumn.png" alt="Autumn red leaves">
+          <h3 style="color: var(--bg-cream);">Autumn (Aki)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8;">Famous for 'koyo', the vibrant changing of the autumn foliage, where maple leaves turn deep, fiery reds and golds.</p>
+        </div>
+
+        <div class="season-card fade-in">
+          <img src="assets/images/winter.png" alt="Winter snow on a temple">
+          <h3 style="color: var(--bg-cream);">Winter (Fuyu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8;">Cold and crisp. The western coast and northern regions experience "ocean-effect" snow, creating some of the heaviest snowfalls in the world.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Geography of Japan Educational Project.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
