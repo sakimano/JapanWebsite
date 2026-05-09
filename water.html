@@ -23,7 +23,13 @@
     </nav>
   </header>
 
-  <main style="padding-top: 150px;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
+    <div class="particles-container" data-type="subtle"></div>
+    <div class="koi-container">
+      <div class="koi-fish fish1" style="--scale: 1;"></div>
+      <div class="koi-fish fish2" style="--scale: 0.8;"></div>
+      <div class="koi-fish fish3" style="--scale: 1.2;"></div>
+    </div>
     
     <section>
       <div class="section-header fade-in">
@@ -33,7 +39,8 @@
       
       <div class="split-layout fade-in">
         <div class="split-image">
-          <img src="assets/images/river.png" alt="Traditional Japanese vertical ink painting style of a river">
+          <img src="assets/images/river.png" alt="Traditional Japanese vertical ink painting style of a river" class="reveal-ink parallax-img">
+          <div class="shimmer-overlay" style="opacity: 0.2; background: linear-gradient(45deg, transparent 40%, rgba(135,206,235,0.2) 50%, transparent 60%);"></div>
         </div>
         <div class="split-text">
           <h3>The Japanese Alps</h3>
@@ -44,6 +51,7 @@
       </div>
     </section>
 
+    <div class="wave-divider"></div>
     <section class="dark-section">
       <div class="section-header fade-in">
         <h2>Erosion & Coastal Plains</h2>

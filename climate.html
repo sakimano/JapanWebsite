@@ -55,7 +55,8 @@
     </nav>
   </header>
 
-  <main style="padding-top: 150px;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
+    <div class="sakura-container"></div>
     
     <section>
       <div class="section-header fade-in">
@@ -81,6 +82,7 @@
       </div>
     </section>
 
+    <div class="wave-divider"></div>
     <section class="dark-section">
       <div class="section-header fade-in">
         <h2>The Four Seasons</h2>
@@ -90,28 +92,32 @@
 
       <div class="seasonal-grid">
         
-        <div class="season-card fade-in">
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
           <img src="assets/images/spring.png" alt="Spring cherry blossoms">
-          <h3 style="color: var(--bg-cream);">Spring (Haru)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8;">Defined by the brief, spectacular blooming of the sakura (cherry blossoms), moving in a wave from south to north.</p>
+          <div class="particles-container" data-type="sakura" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Spring (Haru)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Defined by the brief, spectacular blooming of the sakura (cherry blossoms), moving in a wave from south to north.</p>
         </div>
 
-        <div class="season-card fade-in">
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
           <img src="assets/images/summer.png" alt="Summer bamboo forest">
-          <h3 style="color: var(--bg-cream);">Summer (Natsu)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8;">Hot and highly humid, beginning with a rainy season (tsuyu) and characterized by lush, vibrant green forests.</p>
+          <div class="particles-container" data-type="summer" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Summer (Natsu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Hot and highly humid, beginning with a rainy season (tsuyu) and characterized by lush, vibrant green forests.</p>
         </div>
 
-        <div class="season-card fade-in">
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
           <img src="assets/images/autumn.png" alt="Autumn red leaves">
-          <h3 style="color: var(--bg-cream);">Autumn (Aki)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8;">Famous for 'koyo', the vibrant changing of the autumn foliage, where maple leaves turn deep, fiery reds and golds.</p>
+          <div class="particles-container" data-type="autumn" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Autumn (Aki)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Famous for 'koyo', the vibrant changing of the autumn foliage, where maple leaves turn deep, fiery reds and golds.</p>
         </div>
 
-        <div class="season-card fade-in">
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
           <img src="assets/images/winter.png" alt="Winter snow on a temple">
-          <h3 style="color: var(--bg-cream);">Winter (Fuyu)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8;">Cold and crisp. The western coast and northern regions experience "ocean-effect" snow, creating some of the heaviest snowfalls in the world.</p>
+          <div class="particles-container" data-type="snow" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Winter (Fuyu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Cold and crisp. The western coast and northern regions experience "ocean-effect" snow, creating some of the heaviest snowfalls in the world.</p>
         </div>
 
       </div>

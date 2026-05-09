@@ -23,7 +23,13 @@
     </nav>
   </header>
 
-  <main style="padding-top: 150px;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
+    <div class="particles-container" data-type="subtle"></div>
+    <div class="koi-container">
+      <div class="koi-fish fish1" style="--scale: 1;"></div>
+      <div class="koi-fish fish2" style="--scale: 0.8;"></div>
+      <div class="koi-fish fish3" style="--scale: 1.2;"></div>
+    </div>
     
     <section class="dark-section" style="border-top: none;">
       <div class="section-header fade-in">
@@ -33,7 +39,8 @@
       
       <div class="split-layout reverse fade-in">
         <div class="split-image">
-          <img src="assets/images/ocean.png" alt="Traditional Japanese wave art, Hokusai style">
+          <img src="assets/images/ocean.png" alt="Traditional Japanese wave art, Hokusai style" class="reveal-ink parallax-img">
+          <div class="shimmer-overlay" style="opacity: 0.4;"></div>
         </div>
         <div class="split-text">
           <h3>The Surrounding Seas</h3>
@@ -44,6 +51,7 @@
       </div>
     </section>
 
+    <div class="wave-divider"></div>
     <section>
       <div class="section-header fade-in">
         <h2>Marine Geography & Economy</h2>

@@ -26,7 +26,12 @@
 
   <main>
     <section class="hero">
-      <img src="assets/images/hero.png" alt="Ukiyo-e style Mount Fuji and waves" class="hero-bg fade-in">
+      <img src="assets/images/hero.png" alt="Ukiyo-e style Mount Fuji and waves" class="hero-bg">
+      <div class="clouds-container">
+        <div class="cloud" style="width: 40vw; height: 20vh; top: 10%; animation-duration: 40s;"></div>
+        <div class="cloud" style="width: 50vw; height: 25vh; top: 30%; animation-duration: 55s; animation-delay: -20s;"></div>
+      </div>
+      <div class="particles-container" data-type="sakura"></div>
       <div class="hero-overlay"></div>
       <div class="hero-content fade-in">
         <span class="hero-subtitle">In the land of the rising sun</span>
@@ -49,13 +54,18 @@
           <p>Japan's landscape is highly rugged, with over 70% of the land covered by mountains and heavily forested areas. This unique geography has profoundly shaped the nation's culture, economy, and history, fostering a deep respect and spiritual connection with nature, famously seen in Shinto traditions.</p>
         </div>
         <div class="split-image">
-          <img src="assets/images/map.png" alt="Stylized map of Japan">
+          <img src="assets/images/map.png" alt="Stylized map of Japan" class="reveal-ink parallax-img">
         </div>
       </div>
     </section>
 
-    <section id="features" class="dark-section">
-      <div class="section-header fade-in">
+    <div class="wave-divider"></div>
+    <section id="features" class="dark-section" style="position: relative; overflow: hidden;">
+      <div class="koi-container">
+        <div class="koi-fish fish1" style="--scale: 1.5; opacity: 0.1;"></div>
+        <div class="koi-fish fish2" style="--scale: 1; opacity: 0.1;"></div>
+      </div>
+      <div class="section-header fade-in" style="position: relative; z-index: 2;">
         <h2>Key Geographic Features</h2>
         <div class="divider"></div>
       </div>
