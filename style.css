@@ -10,10 +10,10 @@
   --gold: #d4af37;
   --text-dark: #222222;
   --text-light: #fbf9f4;
-  
+
   --font-heading: 'Playfair Display', 'Noto Serif JP', serif;
   --font-body: 'Lato', sans-serif;
-  
+
   --border-gold: 1px solid var(--gold);
 }
 
@@ -34,7 +34,12 @@ body {
   background-size: 20px 20px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 600;
   line-height: 1.2;
@@ -103,11 +108,13 @@ nav a::after {
   transform: translateX(-50%);
 }
 
-nav a:hover, nav a.active {
+nav a:hover,
+nav a.active {
   color: var(--crimson);
 }
 
-nav a:hover::after, nav a.active::after {
+nav a:hover::after,
+nav a.active::after {
   width: 100%;
 }
 
@@ -200,7 +207,7 @@ nav a:hover::after, nav a.active::after {
   font-size: 5rem;
   color: var(--indigo);
   margin-bottom: 40px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Sections */
@@ -252,21 +259,31 @@ section {
 .section-header h2::before {
   content: '';
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 150%; height: 150%;
+  width: 150%;
+  height: 150%;
   background: radial-gradient(circle, rgba(13, 27, 42, 0.04) 0%, transparent 70%);
   z-index: -1;
   animation: mistPulse 8s ease-in-out infinite alternate;
   pointer-events: none;
 }
+
 .dark-section .section-header h2::before {
   background: radial-gradient(circle, rgba(251, 249, 244, 0.04) 0%, transparent 70%);
 }
 
 @keyframes mistPulse {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
 }
 
 /* Cards */
@@ -330,11 +347,18 @@ section {
   flex: 1;
 }
 
+
+
 .split-text h3 {
   font-size: 2.5rem;
   color: var(--indigo);
   margin-bottom: 20px;
 }
+
+.split-text h3.dark-section-text {
+  color: var(--bg-cream);
+}
+
 
 .split-text p {
   font-size: 1.1rem;
@@ -359,8 +383,10 @@ section {
   color: var(--text-light);
   border-top: var(--border-gold);
   border-bottom: var(--border-gold);
-  background-image: none; /* remove noise for dark sections */
+  background-image: none;
+  /* remove noise for dark sections */
 }
+
 
 .dark-section .section-header h2 {
   color: var(--bg-cream);
@@ -395,13 +421,20 @@ footer p {
 
 /* Animations & Reduced Motion */
 @media (prefers-reduced-motion: no-preference) {
+
   /* Page Load */
   body {
     animation: pageFadeIn 1.2s ease-out forwards;
   }
+
   @keyframes pageFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 
   /* Fade & Slide Up */
@@ -410,6 +443,7 @@ footer p {
     transform: translateY(30px);
     transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.25, 1, 0.5, 1);
   }
+
   .fade-in.appear {
     opacity: 1;
     transform: translateY(0);
@@ -422,6 +456,7 @@ footer p {
     transform: scale(0.98);
     transition: opacity 1.5s ease, filter 1.5s ease, transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
   }
+
   .reveal-ink.appear {
     opacity: 1;
     filter: blur(0);
@@ -433,17 +468,27 @@ footer p {
     opacity: 0;
     animation: fadeInUp 1.5s 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
+
   .hero-content .hero-title {
     opacity: 0;
     animation: fadeInUp 1.5s 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
+
   .hero-content .btn {
     opacity: 0;
     animation: fadeInUp 1.5s 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
+
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Hero Image Float */
@@ -451,78 +496,157 @@ footer p {
     animation: slowFloat 20s ease-in-out infinite alternate;
     transform-origin: center;
   }
+
   @keyframes slowFloat {
-    from { transform: scale(1.02) translate(0, 0); }
-    to { transform: scale(1.05) translate(-1%, -1%); }
+    from {
+      transform: scale(1.02) translate(0, 0);
+    }
+
+    to {
+      transform: scale(1.05) translate(-1%, -1%);
+    }
   }
 
   /* Clouds */
   .clouds-container {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
   }
+
   .cloud {
     position: absolute;
-    background: radial-gradient(circle, rgba(251,249,244,0.6) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(251, 249, 244, 0.6) 0%, transparent 70%);
     border-radius: 50%;
     filter: blur(20px);
     animation: floatCloud linear infinite;
   }
+
   @keyframes floatCloud {
-    0% { transform: translateX(-20vw); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateX(100vw); opacity: 0; }
+    0% {
+      transform: translateX(-20vw);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 1;
+    }
+
+    90% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateX(100vw);
+      opacity: 0;
+    }
   }
 
   /* Particles */
   .particles-container {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
   }
+
   .particle {
     position: absolute;
     opacity: 0;
     pointer-events: none;
     animation: drift linear infinite;
   }
+
   @keyframes drift {
-    0% { transform: translate(0, -50px) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.6; }
-    90% { opacity: 0.6; }
-    100% { transform: translate(150px, 100vh) rotate(360deg); opacity: 0; }
+    0% {
+      transform: translate(0, -50px) rotate(0deg);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.6;
+    }
+
+    90% {
+      opacity: 0.6;
+    }
+
+    100% {
+      transform: translate(150px, 100vh) rotate(360deg);
+      opacity: 0;
+    }
   }
+
   @keyframes driftDown {
-    0% { transform: translate(0, -50px); opacity: 0; }
-    10% { opacity: 0.8; }
-    90% { opacity: 0.8; }
-    100% { transform: translate(50px, 100vh); opacity: 0; }
+    0% {
+      transform: translate(0, -50px);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.8;
+    }
+
+    90% {
+      opacity: 0.8;
+    }
+
+    100% {
+      transform: translate(50px, 100vh);
+      opacity: 0;
+    }
   }
+
   @keyframes driftUp {
-    0% { transform: translate(0, 100%) scale(1); opacity: 0; }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.5; }
-    100% { transform: translate(-50px, -100%) scale(2); opacity: 0; }
+    0% {
+      transform: translate(0, 100%) scale(1);
+      opacity: 0;
+    }
+
+    20% {
+      opacity: 0.5;
+    }
+
+    80% {
+      opacity: 0.5;
+    }
+
+    100% {
+      transform: translate(-50px, -100%) scale(2);
+      opacity: 0;
+    }
   }
 
   /* Ocean Shimmer & Water Ripple */
   .shimmer-overlay {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
     background-size: 200% 200%;
     animation: shimmerWave 5s infinite;
     pointer-events: none;
   }
+
   @keyframes shimmerWave {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
   }
 
   /* Sakura Mouse Trail */
@@ -535,45 +659,84 @@ footer p {
     box-shadow: inset 0 0 3px rgba(255, 105, 180, 0.4);
     animation: petalFade 1.5s ease-out forwards;
   }
+
   @keyframes petalFade {
-    0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1) translateY(0) rotate(var(--start-rot)); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) translateY(30px) rotate(var(--end-rot)); }
+    0% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(1) translateY(0) rotate(var(--start-rot));
+    }
+
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5) translateY(30px) rotate(var(--end-rot));
+    }
   }
 
   /* Koi Fish Animation */
   .koi-container {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
   }
+
   .koi-wrapper {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     pointer-events: none;
     will-change: transform;
   }
+
   .koi-svg {
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     transform-origin: 50% 30%;
     animation: bodyWiggle var(--dur) ease-in-out var(--delay) infinite alternate;
   }
+
   @keyframes bodyWiggle {
-    0% { transform: rotate(-3deg); }
-    100% { transform: rotate(3deg); }
+    0% {
+      transform: rotate(-3deg);
+    }
+
+    100% {
+      transform: rotate(3deg);
+    }
   }
+
   @keyframes tailSway {
-    0% { transform: rotate(-15deg); }
-    100% { transform: rotate(15deg); }
+    0% {
+      transform: rotate(-15deg);
+    }
+
+    100% {
+      transform: rotate(15deg);
+    }
   }
+
   @keyframes finSway {
-    0% { transform: rotate(-10deg); }
-    100% { transform: rotate(20deg); }
+    0% {
+      transform: rotate(-10deg);
+    }
+
+    100% {
+      transform: rotate(20deg);
+    }
   }
+
   @keyframes finSwayReverse {
-    0% { transform: rotate(10deg); }
-    100% { transform: rotate(-20deg); }
+    0% {
+      transform: rotate(10deg);
+    }
+
+    100% {
+      transform: rotate(-20deg);
+    }
   }
 
   /* Water Ripple */
@@ -586,13 +749,25 @@ footer p {
     opacity: 0;
     animation: rippleExpand 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
+
   .dark-section .water-ripple {
     border-color: rgba(251, 249, 244, 0.2);
   }
+
   @keyframes rippleExpand {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    10% { opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.6;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
   }
 
   /* Animated Wave Divider */
@@ -604,20 +779,42 @@ footer p {
     animation: waveFlow 25s linear infinite;
     margin-bottom: 40px;
   }
+
   .dark-section .wave-divider {
     background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23fbf9f4" opacity="0.05"/></svg>') repeat-x;
     background-size: 1200px 30px;
   }
+
   @keyframes waveFlow {
-    0% { background-position-x: 0; }
-    100% { background-position-x: 1200px; }
+    0% {
+      background-position-x: 0;
+    }
+
+    100% {
+      background-position-x: 1200px;
+    }
   }
 }
 
 /* Fallback for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .fade-in, .reveal-ink { opacity: 1; transform: none; filter: none; clip-path: none; }
-  .particles-container, .wave-divider, .clouds-container, .shimmer-overlay, .sakura-trail-petal, .koi-container { display: none; }
+
+  .fade-in,
+  .reveal-ink {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    clip-path: none;
+  }
+
+  .particles-container,
+  .wave-divider,
+  .clouds-container,
+  .shimmer-overlay,
+  .sakura-trail-petal,
+  .koi-container {
+    display: none;
+  }
 }
 
 /* Responsive */
@@ -625,16 +822,21 @@ footer p {
   .hero-title {
     font-size: 3.5rem;
   }
-  .split-layout, .split-layout.reverse {
+
+  .split-layout,
+  .split-layout.reverse {
     flex-direction: column;
   }
+
   header {
     width: 95%;
     padding: 15px 20px;
   }
+
   nav ul {
     gap: 15px;
   }
+
   nav a {
     font-size: 0.8rem;
   }
@@ -642,6 +844,7 @@ footer p {
 
 @media (max-width: 600px) {
   nav {
-    display: none; /* Add a hamburger menu in real scenario, keeping it simple for now */
+    display: none;
+    /* Add a hamburger menu in real scenario, keeping it simple for now */
   }
 }

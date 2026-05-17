@@ -2,95 +2,241 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geography of Japan | Geographic Processes</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geography of Japan | Mapping Japan</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .map-placeholder {
+      width: 100%;
+      height: 250px;
+      background-color: var(--bg-cream-dark);
+      border: var(--border-gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--indigo);
+      font-family: var(--font-heading);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-placeholder::after {
+      content: '⚓';
+      font-size: 8rem;
+      opacity: 0.05;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .map-placeholder span {
+      z-index: 1;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 10px 20px;
+      background-color: rgba(251, 249, 244, 0.8);
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+    }
+
+    .citation-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.95rem;
+    }
+
+    .citation-list li {
+      margin-bottom: 15px;
+      text-indent: -30px;
+      padding-left: 30px;
+      line-height: 1.5;
+    }
+
+    .hero-subtitle-text {
+      font-family: var(--font-body);
+      color: var(--crimson);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">日本</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="mapping.html" class="active">Mapping</a></li>
-                <li><a href="geographic.html">Tectonics</a></li>
-                <li><a href="water.html">Landforms</a></li>
-                <li><a href="ocean.html">Oceans</a></li>
-                <li><a href="climate.html">Climate</a></li>
-                <li><a href="references.html">References</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <div class="logo">日本</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mapping.html" class="active">Mapping</a></li>
+        <li><a href="geographic.html">Tectonics</a></li>
+        <li><a href="water.html">Landforms</a></li>
+        <li><a href="ocean.html">Oceans</a></li>
+        <li><a href="climate.html">Climate</a></li>
+        <li><a href="references.html">References</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- <main style="padding-top: 150px; position: relative; overflow: hidden;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
     <div class="particles-container" data-type="smoke"></div>
     <div class="koi-container"></div>
 
-    <section class="dark-section" style="border-top: none;">
-      <div class="section-header fade-in">
-        <h2>Tectonics & Volcanism</h2>
-        <div class="divider"></div>
-      </div>
-
-      <div class="split-layout fade-in">
-        <div class="split-text">
-          <h3>The Ring of Fire</h3>
-          <p>Japan is situated along the Pacific Ring of Fire, a massive horseshoe-shaped seismically active belt of
-            earthquake epicenters, volcanoes, and tectonic plate boundaries that fringes the Pacific basin.</p>
-          <p>The Japanese archipelago is the result of oceanic movements over hundreds of millions of years from the
-            mid-Silurian to the Pleistocene. It lies at the complex intersection of four major tectonic plates: the
-            Pacific Plate, the Philippine Sea Plate, the Eurasian Plate, and the North American Plate.</p>
-          <p>The subduction of the Pacific and Philippine Sea Plates beneath the Eurasian and North American Plates is
-            the primary driver of Japan's intense geological activity, driving continuous mountain building (orogeny)
-            and volcanic eruptions.</p>
+    <section style="text-align: center; padding-bottom: 60px;">
+      <div class="fade-in">
+        <h1 style="font-size: 4rem; color: var(--indigo); margin-bottom: 20px; font-family: var(--font-heading);">
+          Mapping Japan</h1>
+        <div class="divider"
+          style="height: 2px; width: 120px; background-color: var(--crimson); margin: 0 auto; position: relative;">
+          <span
+            style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: var(--bg-cream); padding: 0 15px; color: var(--gold); font-size: 1.5rem;">🌊</span>
         </div>
-        <div class="split-image">
-          <img src="assets/images/volcano.png" alt="Dramatic ink wash painting of erupting Mount Fuji"
-            class="reveal-ink parallax-img">
+      </div>
+    </section>
+
+    <section style="padding-top: 0;">
+      <div class="split-layout fade-in">
+        <div class="split-text" style="text-align: center; max-width: 900px; margin: 0 auto;">
+          <p style="font-size: 1.2rem;">Maps help us understand how geography has shaped Japan throughout history.
+            Because Japan is an island country surrounded by the ocean and mountains, maps can show important things
+            like trade routes, tectonic activity, climate regions, and population centers. By looking at different maps
+            of Japan, we can better understand how location, nature, and geography continue to influence daily life,
+            culture, transportation, and natural hazards across the country.</p>
         </div>
       </div>
     </section>
 
     <div class="wave-divider"></div>
+
+    <section class="dark-section" style="position: relative; overflow: hidden;">
+      <div class="section-header fade-in">
+        <h2>Cartographic Perspectives</h2>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Map 1 image left, text right -->
+      <div class="split-layout fade-in">
+        <div class="split-image">
+          <img src="assets/images/Map1.png" alt="Stylized map showing Japan's location in East Asia"
+            class="reveal-ink parallax-img">
+        </div>
+        <div class="split-text">
+          <h3 class="dark-section-text">East Asia Positioning</h3>
+          <p>Japan is an island country located in East Asia in the Pacific Ocean. It is located east of China, the
+            Korean Peninsula, and Russia. Because Japan stretches across a long distance from north to south, the
+            country has many different climates and natural environments across the islands. Japan’s location has also
+            influenced trade, transportation, culture, and relationships with neighboring countries throughout history.
+          </p>
+        </div>
+      </div>
+
+      <!-- Map 2 text left, image right -->
+      <div class="split-layout reverse fade-in">
+        <div class="split-image">
+          <img src="assets/images/Map2.jpg" alt="Stylized map showing Japan's latitudinal range"
+            class="reveal-ink parallax-img">
+        </div>
+        <div class="split-text">
+          <h3 class="dark-section-text">Latitudinal Range</h3>
+          <p>Japan is located between about 24°N and 46°N latitude, which means the country stretches across a large
+            north-to-south distance. Because of this, Japan has many different climates and environments across the
+            islands. Northern areas such as Hokkaido experience long snowy winters, while southern regions like Okinawa
+            have a much warmer subtropical climate. Japan’s location also affects seasonal weather patterns, ocean
+            currents, agriculture, and the way people live in different parts of the country.</p>
+        </div>
+      </div>
+
+      <!-- Map 3 image left, text right -->
+      <div class="split-layout fade-in">
+        <div class="split-image">
+          <img src="assets/images/Map3.png" alt="Edo period inspired historical map of Japan"
+            class="reveal-ink parallax-img">
+        </div>
+        <div class="split-text">
+          <h3 class="dark-section-text">Mapping Japan in the Edo Period</h3>
+          <p>During the Edo period, maps of Japan became much more detailed as travel and trade increased throughout the
+            country. One of the most famous Japanese cartographers was Inō Tadataka, who traveled across Japan and
+            carefully measured coastlines and distances by himself. I think it is interesting that people were able to
+            create such accurate maps without modern technology. His work helped people better understand the geography
+            of Japan and became an important part of Japanese cartography and navigation history.</p>
+        </div>
+      </div>
+
+      <!-- Map 4 text left, image right -->
+      <div class="split-layout reverse fade-in">
+        <div class="split-image">
+          <img src="assets/images/Map4.png" alt="Stylized maritime map of Japan's sea routes"
+            class="reveal-ink parallax-img">
+        </div>
+        <div class="split-text">
+          <h3 class="dark-section-text">Tectonic Plates Around Japan</h3>
+          <p>Japan is located near several tectonic plate boundaries, including the Philippine Sea Plate, the North
+            American Plate, and the Amurian Plate. Because these plates are constantly moving, Japan experiences
+            frequent earthquakes and volcanic activity. These tectonic movements have shaped Japan’s mountains,
+            coastlines, and ocean trenches over thousands of years. They also affect everyday life in Japan because
+            people must prepare for earthquakes, tsunamis, and other natural hazards on a regular basis.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
     <section>
       <div class="section-header fade-in">
-        <h2>Seismic Hazards</h2>
+        <h2>Geographic Inquiries</h2>
         <div class="divider"></div>
       </div>
 
       <div class="cards-grid">
         <div class="card fade-in">
-          <h3>Earthquakes</h3>
-          <p>Japan experiences roughly 1,500 earthquakes a year. While most are minor tremors, the accumulated tectonic
-            stress occasionally releases in massive, destructive quakes, such as the 1923 Great Kantō earthquake and the
-            2011 Tōhoku earthquake.</p>
+          <h3>Continent & General Location</h3>
+          <p>Japan is located in East Asia in the Pacific Ocean. It is east of China, Korea, and Russia, and the country
+            is made up of many islands. The four main islands are Honshu, Hokkaido, Kyushu, and Shikoku. Because Japan
+            is surrounded by the ocean, nature has a big influence on daily life, transportation, food, weather, and
+            culture. Japan is also known for its mountains, coastlines, earthquakes, and volcanoes.</p>
         </div>
         <div class="card fade-in">
-          <h3>Tsunamis</h3>
-          <p>The word "tsunami" originates from Japanese (tsu = harbor, nami = wave). These devastating seismic sea
-            waves are triggered by underwater earthquakes at subduction zones. Japan's extensive and populated
-            coastlines make it highly vulnerable to tsunamis.</p>
+          <h3>Latitudinal Range</h3>
+          <p>Japan stretches from about 24°N to 46°N latitude, so the climate changes a lot depending on the region.
+            Northern areas like Hokkaido have very cold winters and heavy snow, while southern areas like Okinawa are
+            much warmer and more subtropical. I think this is one reason why Japan has so many different landscapes,
+            ecosystems, and seasonal experiences across the country.</p>
         </div>
         <div class="card fade-in">
-          <h3>Volcanoes</h3>
-          <p>There are over 100 active volcanoes in Japan, representing about 10% of all active volcanoes in the world.
-            Famous stratovolcanoes include Mount Fuji, which is currently dormant, and Sakurajima, one of the most
-            active volcanoes on Earth, constantly raining ash on the nearby city of Kagoshima.</p>
+          <h3>Historical Existence</h3>
+          <p>Japan has a very long history that goes back thousands of years. Different historical periods like the
+            Nara, Heian, Kamakura, Edo, and modern eras helped shape Japanese culture, government, and society over
+            time. Even though Japan has changed a lot throughout history, many traditional customs, festivals, and
+            cultural practices are still an important part of daily life today.</p>
+        </div>
+        <div class="card fade-in">
+          <h3>Famous Cartographers</h3>
+          <p>One famous cartographer from Japan was Inō Tadataka. During the Edo period, he traveled across the country
+            and carefully measured coastlines and distances to create detailed maps of Japan. I think it is really
+            impressive that he was able to make such accurate maps without modern technology or satellite systems. His
+            work helped people better understand the geography of Japan and became an important part of Japanese
+            mapmaking history.</p>
         </div>
       </div>
     </section>
 
-  </main> -->
 
-    <footer>
-        <p>&copy; PS120 Earth Science Project.</p>
-    </footer>
 
-    <script src="script.js"></script>
+  </main>
+
+  <footer>
+    <p>&copy; PS120 Earth Science Project.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
