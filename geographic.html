@@ -4,8 +4,428 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geography of Japan | Geographic Processes</title>
+  <title>Geography of Japan | Tectonics & Natural Disasters</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Specific styles for geographic widgets */
+
+    /* Interactive Earthquake Simulator */
+    .sim-container {
+      border: var(--border-gold);
+      background-color: var(--bg-cream-dark);
+      padding: 25px;
+      position: relative;
+      margin-top: 20px;
+      box-shadow: 8px 8px 0 var(--indigo);
+      border-radius: 4px;
+    }
+
+    .sim-header {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .sim-header h4 {
+      font-family: var(--font-heading);
+      color: var(--indigo);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .sim-viewport {
+      height: 250px;
+      border-bottom: 12px solid #3e382d;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(to top, rgba(13, 27, 42, 0.05), transparent);
+      padding: 10px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .ground-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background-color: #5a5244;
+      transition: transform 0.1s ease;
+    }
+
+    .sim-building-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .sim-building {
+      width: 65px;
+      height: 160px;
+      background-color: rgba(13, 27, 42, 0.85);
+      border: 2px solid var(--indigo);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 8px 4px;
+      position: relative;
+      transform-origin: bottom center;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+    }
+
+    .sim-window-row {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .sim-window {
+      width: 10px;
+      height: 12px;
+      background-color: #ffd800;
+      opacity: 0.75;
+      border-radius: 1px;
+      box-shadow: 0 0 4px #ffd800;
+    }
+
+    /* Structural features */
+    .b-taishin {
+      border-width: 4px;
+      border-color: var(--crimson);
+    }
+
+    .b-taishin-brace {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(193, 18, 31, 0.3) 28px, rgba(193, 18, 31, 0.3) 30px),
+        repeating-linear-gradient(-45deg, transparent, transparent 28px, rgba(193, 18, 31, 0.3) 28px, rgba(193, 18, 31, 0.3) 30px);
+      pointer-events: none;
+    }
+
+    .b-seishin-damper {
+      position: absolute;
+      width: 6px;
+      height: 35px;
+      background-color: var(--crimson);
+      border: 1px solid var(--indigo);
+      right: -8px;
+      top: 60px;
+      border-radius: 3px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .b-seishin-damper::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 35px;
+      background-color: var(--crimson);
+      border: 1px solid var(--indigo);
+      left: -71px;
+      top: -1px;
+      border-radius: 3px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .b-menshin {
+      margin-bottom: 12px;
+    }
+
+    .b-menshin-isolators {
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+
+    .isolator-pad {
+      width: 14px;
+      height: 12px;
+      background-color: var(--gold);
+      border: 1px solid var(--indigo);
+      border-radius: 50%;
+      background-image: radial-gradient(circle, #fff 2px, transparent 3px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .building-label {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--indigo);
+      text-align: center;
+      font-family: var(--font-heading);
+    }
+
+    .building-desc {
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      text-align: center;
+      max-width: 80px;
+      line-height: 1.2;
+      margin-top: 3px;
+    }
+
+    /* Interactive Chart */
+    .chart-container {
+      border: var(--border-gold);
+      background-color: var(--indigo-light);
+      padding: 25px;
+      color: var(--text-light);
+      box-shadow: 8px 8px 0 var(--crimson);
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .chart-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .chart-row {
+      margin-bottom: 18px;
+    }
+
+    .chart-label-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      font-family: var(--font-body);
+    }
+
+    .chart-label {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .chart-value {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .chart-bar-bg {
+      height: 14px;
+      background-color: rgba(251, 249, 244, 0.1);
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--crimson) 0%, var(--gold) 100%);
+      border-radius: 7px;
+      width: 0;
+      /* Animated dynamically */
+      transition: width 1.8s cubic-bezier(0.1, 1, 0.1, 1);
+    }
+
+    .chart-bar-fill.domestic {
+      background: linear-gradient(90deg, #1b4d3e 0%, #2e8b57 100%);
+    }
+
+    /* Interactive Simulator Controls */
+    .sim-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .sim-btn {
+      width: 100%;
+      text-align: center;
+      font-size: 0.85rem;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    /* Animation Trigger States */
+    .eq-active .ground-line {
+      animation: groundShake 3s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    .eq-active .b-taishin {
+      animation: taishinShake 3s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    .eq-active .b-seishin {
+      animation: seishinShake 3s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    .eq-active .b-menshin {
+      animation: menshinShake 3s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    @keyframes groundShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-8px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(8px);
+      }
+    }
+
+    @keyframes taishinShake {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(0deg);
+      }
+
+      15%,
+      35%,
+      55%,
+      75%,
+      95% {
+        transform: translateX(-16px) rotate(-4.5deg);
+      }
+
+      25%,
+      45%,
+      65%,
+      85% {
+        transform: translateX(16px) rotate(4.5deg);
+      }
+    }
+
+    @keyframes seishinShake {
+
+      0%,
+      100% {
+        transform: translateX(0) rotate(0deg);
+      }
+
+      10%,
+      30% {
+        transform: translateX(-8px) rotate(-1.8deg);
+      }
+
+      20%,
+      40% {
+        transform: translateX(8px) rotate(1.8deg);
+      }
+
+      50%,
+      70% {
+        transform: translateX(-3px) rotate(-0.5deg);
+      }
+
+      60%,
+      80% {
+        transform: translateX(3px) rotate(0.5deg);
+      }
+
+      90% {
+        transform: translateX(-0.5px) rotate(0);
+      }
+    }
+
+    @keyframes menshinShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-2.5px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(2.5px);
+      }
+    }
+
+    /* References styling */
+    .references-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .references-list li {
+      margin-bottom: 20px;
+      padding-left: 35px;
+      text-indent: -35px;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      border-bottom: 1px solid rgba(13, 27, 42, 0.1);
+      padding-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .references-list li a {
+      color: var(--crimson);
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+
+    .references-list li a:hover {
+      color: var(--gold);
+    }
+
+    /* Media Embed Container */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 ratio */
+      height: 0;
+      overflow: hidden;
+      border: var(--border-gold);
+      box-shadow: 6px 6px 0 var(--indigo);
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -26,71 +446,584 @@
     </nav>
   </header>
 
-  <!-- <main style="padding-top: 150px; position: relative; overflow: hidden;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
     <div class="particles-container" data-type="smoke"></div>
     <div class="koi-container"></div>
 
+    <!-- SECTION 1: Tectonic Plates & The Ring of Fire -->
     <section class="dark-section" style="border-top: none;">
       <div class="section-header fade-in">
-        <h2>Tectonics & Volcanism</h2>
+        <h2>Tectonic Plates and Natural Disasters</h2>
         <div class="divider"></div>
       </div>
 
       <div class="split-layout fade-in">
         <div class="split-text">
-          <h3>The Ring of Fire</h3>
-          <p>Japan is situated along the Pacific Ring of Fire, a massive horseshoe-shaped seismically active belt of
-            earthquake epicenters, volcanoes, and tectonic plate boundaries that fringes the Pacific basin.</p>
-          <p>The Japanese archipelago is the result of oceanic movements over hundreds of millions of years from the
-            mid-Silurian to the Pleistocene. It lies at the complex intersection of four major tectonic plates: the
-            Pacific Plate, the Philippine Sea Plate, the Eurasian Plate, and the North American Plate.</p>
-          <p>The subduction of the Pacific and Philippine Sea Plates beneath the Eurasian and North American Plates is
-            the primary driver of Japan's intense geological activity, driving continuous mountain building (orogeny)
-            and volcanic eruptions.</p>
+          <h3 class="dark-section-text">Japan and the Pacific Ring of Fire</h3>
+          <p>Japan is located along the Pacific Ring of Fire, which is one of the most tectonically active regions in
+            the world. Instead of sitting on one stable tectonic plate, Japan is located near several plate boundaries
+            that are constantly moving. Because of this, earthquakes, volcanoes, and tsunamis are a normal part of life
+            in Japan. I think Japan’s geography is really interesting because these tectonic movements have shaped not
+            only the landscape, but also the way people live, build cities, and prepare for disasters.
+          </p>
+          <h3 class="dark-section-text">The Four Plates</h3>
+          <p>The four major tectonic plates connected to Japan are:</p>
+          <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--gold); list-style-type: square;">
+            <li><strong>Pacific Plate:</strong> located east of Japan and moving westward beneath northern Japan.</li>
+            <li><strong>Philippine Sea Plate:</strong> located south of Japan and moving underneath southwestern Japan.
+            </li>
+            <li><strong>Eurasian Plate:</strong> located beneath western Japan.
+            </li>
+            <li><strong>North American Plate (Okhotsk Plate):</strong> connected to northeastern Japan and Hokkaido.
+            </li>
+          </ul>
+          <h3 class="dark-section-text">Natural Disasters in Japan</h3>
+          <p>Because Japan is located near these tectonic plate boundaries, natural disasters happen frequently
+            throughout the country. Earthquakes are especially common, and some large earthquakes can also cause
+            tsunamis. One important example is the 2011 Tohoku Earthquake and Tsunami, which caused major damage in
+            northeastern Japan. Japan also has many active volcanoes, including Mount Fuji and Sakurajima. Growing up in
+            Japan, earthquake preparedness is something people learn from a young age. Earthquake drills, emergency
+            alerts, and disaster prevention systems are a normal part of daily life, and many buildings in Japan are
+            designed to better resist earthquakes.</p>
+
         </div>
         <div class="split-image">
-          <img src="assets/images/volcano.png" alt="Dramatic ink wash painting of erupting Mount Fuji"
-            class="reveal-ink parallax-img">
+          <img src="assets/images/plate.png"
+            alt="Stylized ink-wash map of Japan's four convergent tectonic plates and trenches" class="reveal-ink">
         </div>
       </div>
     </section>
 
     <div class="wave-divider"></div>
+
+    <!-- SECTION 2: Seismicity & Disaster Preparedness -->
     <section>
       <div class="section-header fade-in">
-        <h2>Seismic Hazards</h2>
+        <h2>Rock and Mineral Resources</h2>
         <div class="divider"></div>
       </div>
 
-      <div class="cards-grid">
-        <div class="card fade-in">
-          <h3>Earthquakes</h3>
-          <p>Japan experiences roughly 1,500 earthquakes a year. While most are minor tremors, the accumulated tectonic
-            stress occasionally releases in massive, destructive quakes, such as the 1923 Great Kantō earthquake and the
-            2011 Tōhoku earthquake.</p>
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <p>Japan does not have large amounts of natural mineral resources compared to countries like Australia or
+            China, so the country depends heavily on imported raw materials. However, some important domestic resources
+            such as limestone, silica stone, and geothermal energy still support construction, manufacturing, and
+            technology industries across the country. Because Japan is highly industrialized, mineral resources are
+            closely connected to trade, transportation, jobs, and economic development.</p>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Domestic Mining & Resource Management</h4>
+          <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <p>Even though Japan imports many minerals, some important domestic resources are still found in different
+              parts of the country. Limestone is especially important because it is used for cement, roads, buildings,
+              and other infrastructure. Japan also produces silica stone for glass and industrial materials. In
+              Kagoshima Prefecture, the Hishikari Mine is known for producing high-quality gold. Even though Japan does
+              not have many active metal mines today, these resources still support local economies and jobs.
+            </p>
+          </ul>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Imports, Trade, and Industry</h4>
+          <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <p>Because Japan does not have enough iron ore, coal, copper, or oil inside the country, many of these
+              resources are imported from overseas. These imported materials are important for Japan’s automobile,
+              electronics, and steel industries. I think this shows how geography influences Japan’s economy. Since
+              Japan is an island country with limited natural resources, international trade and shipping routes became
+              very important for the country’s development.
+            </p>
+          </ul>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Urban Mining & Recycling</h4>
+          <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <p>One interesting thing I learned is that Japan is also known for “urban mining.” Instead of only relying
+              on natural mines, Japan recovers valuable metals like gold, silver, lithium, and copper from old
+              electronics such as phones, computers, and batteries. This helps reduce waste while also supporting
+              technology industries. I think this reflects how Japan tries to use resources carefully and efficiently.
+            </p>
+          </ul>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Environmental & Economic Impacts</h4>
+          <ul style="margin-left: 20px; margin-bottom: 20px;">
+            <p>Mining and resource development can also create environmental challenges. Old mines sometimes caused
+              pollution in rivers and nearby ecosystems, so the government now focuses more on environmental restoration
+              and safety management. At the same time, mineral resources still play an important role in construction,
+              transportation, manufacturing, and energy production across Japan.
+            </p>
+          </ul>
         </div>
-        <div class="card fade-in">
-          <h3>Tsunamis</h3>
-          <p>The word "tsunami" originates from Japanese (tsu = harbor, nami = wave). These devastating seismic sea
-            waves are triggered by underwater earthquakes at subduction zones. Japan's extensive and populated
-            coastlines make it highly vulnerable to tsunamis.</p>
-        </div>
-        <div class="card fade-in">
-          <h3>Volcanoes</h3>
-          <p>There are over 100 active volcanoes in Japan, representing about 10% of all active volcanoes in the world.
-            Famous stratovolcanoes include Mount Fuji, which is currently dormant, and Sakurajima, one of the most
-            active volcanoes on Earth, constantly raining ash on the nearby city of Kagoshima.</p>
+        <div class="split-image">
+          <div class="chart-container">
+            <div class="chart-title">Japan's Mineral Resource Profile</div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Iron Ore (Steel Industry)</span>
+                <span class="chart-value">Heavily Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="100"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Copper Ore (Electronics & Wiring)</span>
+                <span class="chart-value">Mostly Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="80"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Coal (Energy & Industry)</span>
+                <span class="chart-value">Imported from Overseas</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="90"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Oil & Natural Gas</span>
+                <span class="chart-value">Strong Import Dependence</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="95"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Limestone (Construction & Cement)</span>
+                <span class="chart-value">Domestic Production</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill domestic" data-width="0"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Silica Stone (Glass & Industry)</span>
+                <span class="chart-value">Produced in Japan</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill domestic" data-width="0"></div>
+              </div>
+            </div>
+
+            <p style="font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.8; font-style: italic;">
+              Because Japan has limited natural mineral resources, the country relies heavily on international trade and
+              imported raw materials to support its industries and economy.</p>
+          </div>
+          <!-- <div class="sim-container" id="eq-sim-container">
+            <div class="sim-header">
+              <h4>Earthquake Engineering Simulator</h4>
+              <p style="font-size: 0.75rem; color: var(--text-dark); margin: 0;">Observe how different structural
+                designs react to seismic forces.</p>
+            </div>
+            <div class="sim-viewport">
+              <div class="ground-line"></div>
+
+          <div class="sim-building-container">
+                <div class="sim-building b-taishin">
+                  <div class="b-taishin-brace"></div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                </div>
+                <div class="building-label">Taishin</div>
+                <div class="building-desc">Rigid reinforcement (walls, columns)</div>
+              </div>
+
+              <div class="sim-building-container">
+                <div class="sim-building b-seishin">
+                  <div class="b-seishin-damper"></div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                </div>
+                <div class="building-label">Seishin</div>
+                <div class="building-desc">Vibration control (dampers absorb shock)</div>
+              </div>
+
+              <div class="sim-building-container">
+                <div class="sim-building b-menshin">
+                  <div class="b-menshin-isolators">
+                    <div class="isolator-pad"></div>
+                    <div class="isolator-pad"></div>
+                    <div class="isolator-pad"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+                  <div class="sim-window-row">
+                    <div class="sim-window"></div>
+                    <div class="sim-window"></div>
+                  </div>
+          </div>
+        <div class="building-label">Menshin</div>
+        <div class="building-desc">Base isolation (rubber rollers isolate floor)</div>
+      </div>
+      </div>
+
+          <div class="sim-controls">
+            <button class="btn sim-btn" id="trigger-eq">Trigger Seismic Event (M8.0 Sim)</button>
+          </div>
+        </div> -->
         </div>
       </div>
     </section>
 
-  </main> -->
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 3: Volcanoes of Japan -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Earthquakes</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Earthquakes in Japan</h3>
+          <p>Japan experiences frequent earthquakes because the country is located near several tectonic plate
+            boundaries along the Pacific Ring of Fire. Earthquakes are a part of everyday life in Japan, and they have
+            influenced architecture, transportation systems, emergency planning, and even daily routines. Growing up in
+            Japan, earthquake drills and emergency preparation were very normal to me. This made me realize how strongly
+            geography affects daily life and society in Japan.</p>
+
+          <h4
+            style="color: var(--gold); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Historical Earthquakes:</h4>
+          <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--text-light);">
+            <li><strong>Great East Japan Earthquake (2011):</strong> The 2011 Great East Japan Earthquake was one of the
+              most devastating natural disasters in modern Japanese history. The magnitude 9.0 earthquake triggered a
+              massive tsunami that caused severe destruction across the Tohoku region, especially in Miyagi, Iwate, and
+              Fukushima Prefectures. Because I am from Sendai Miyagi, I can still remember this event vividly. I still
+              remember the shaking of the earthquake, the tsunami warnings, transportation and lifeline shutdowns, and
+              the long recovery process after the earthquake.</li>
+            <li><strong>Great Hanshin Earthquake (1995):</strong> The Great Hanshin Earthquake struck Kobe in 1995 with
+              a magnitude of 6.9. The earthquake caused major damage to roads, buildings, and transportation systems,
+              and more than 6,000 people lost their lives. After this disaster, Japan improved building standards,
+              emergency response systems, and disaster preparation programs throughout the country.</li>
+          </ul>
+
+          <h4
+            style="color: var(--gold); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Earthquake Preparedness</h4>
+          <p>The Japanese government uses many different systems to help citizens prepare for earthquakes. Japan has
+            strict earthquake-resistant building codes, nationwide emergency drills, tsunami evacuation systems, and an
+            advanced Earthquake Early Warning system that sends alerts through phones, television, trains, and public
+            speakers. Schools and workplaces also regularly practice evacuation drills. Because earthquakes happen
+            frequently, disaster preparedness is treated as an important part of daily life in Japan.
+          </p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/earthquake.png" class="reveal-ink">
+
+          <div class="video-wrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/foxww-tMoNg?si=udVDnO9XbNvl965g"
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 4: Mountain Ranges & River Hydrology -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Orogeny & Hydrology: The Mountain Ranges</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>The Rugged Spine of Japan</h3>
+          <p>Over 70% of Japan's landmass is mountainous. These mountains are created by orogeny—the folding, faulting,
+            and uplifting of the Earth's crust as the Pacific and Philippine Sea plates compress the margins of the
+            continental plates. The central spine of Honshu is dominated by the <strong>Japanese Alps</strong>, which
+            are split into three ranges: the Northern Hida, Central Kiso, and Southern Akaishi Mountains. The highest
+            non-volcanic peak is Mount Kita at 3,193 meters.</p>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Climatic and Weather Impacts:</h4>
+          <p>The mountain ranges act as an atmospheric shield. In winter, cold Siberian winds sweep across the Sea of
+            Japan, picking up moisture. When this air hits the steep slopes of the Japanese Alps, it is forced upward
+            (orographic lift), cools, and precipitates as massive amounts of heavy snow on the western side of Honshu,
+            creating the famous "snow country" (<em>Yukiguni</em>). Conversely, the eastern Pacific coast (including
+            Tokyo) lies in the rain shadow, enjoying clear, dry winters.</p>
+
+          <h4
+            style="color: var(--indigo); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Hydrologic and Cultural Roles:</h4>
+          <p>Because Japan's landmass is narrow, the high peaks give rise to steep, rapid rivers (such as the Shinano
+            River and Tone River) that flow swiftly to the coast. These rivers supply critical fresh water and spring
+            snowmelt to irrigate rice paddies in the lowlands, and support hydroelectric power stations. However, they
+            drain so rapidly that storing water is difficult, and heavy rains from summer typhoons frequently cause
+            severe flash floods.</p>
+          <p>Culturally, mountains have long been revered as sacred interfaces between heaven and earth. Under Shinto
+            and Buddhist syncretism, mountains became centers for <em>Sangaku Shinkō</em> (mountain worship) and
+            <em>Shugendō</em>—a practice of mountain asceticism where practitioners (<em>yamabushi</em>) undergo
+            physical and mental tests in the wild. Historically, this rugged terrain also divided Japan into isolated
+            feudal domains (<em>han</em>), protecting regions from easy invasion but making land-based trade extremely
+            difficult, forcing merchants to rely on coastal shipping routes. Today, advanced engineering projects like
+            the Kan-etsu Tunnel and bullet train (Shinkansen) tunnels pierce through these ranges to unify the national
+            economy.
+          </p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/river.png"
+            alt="Traditional ink wash landscape painting depicting steep mountain peaks and rapid river hydrology in Japan"
+            class="reveal-ink">
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 5: Rock & Mineral Resources -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Earth's Crust: Mineral Resources & Economic Trade</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3>Industrial Mineral Mining & Resource Dependency</h3>
+          <p>Geologically, Japan is resource-poor regarding metallic mineral ores. During its post-war industrial
+            expansion, domestic mining of metals like iron, copper, lead, and zinc was phased out due to resource
+            depletion and high labor costs. Today, Japan imports nearly 100% of its metallic raw materials to support
+            its heavy manufacturing, automotive, and electronics sectors.</p>
+
+          <h4
+            style="color: var(--gold); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Domestic Mining & Resource Management:</h4>
+          <p>Despite this dependency, there are notable domestic exceptions in Japan's rock and mineral profile:</p>
+          <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--text-light);">
+            <li><strong>Limestone & Silica:</strong> Japan is 100% self-sufficient in limestone, mined from massive
+              open-cast quarries such as Torigatayama in Kochi Prefecture. Limestone and silica stone are the primary
+              inputs for Japan's massive cement and concrete industries.</li>
+            <li><strong>Hishikari Gold Mine:</strong> Located in Kagoshima and operated by Sumitomo Metal Mining, this
+              is the only major metal mine operating in Japan. It is internationally renowned for its exceptionally high
+              ore grade, yielding 20–40 grams of gold per tonne of rock—about eight times the global mining average.
+            </li>
+            <li><strong>Urban Mining (E-Waste Recycling):</strong> Japan is a pioneer in recovering critical metals
+              (such as gold, silver, copper, and lithium) from recycled consumer electronics. This "urban mine" supplies
+              a substantial portion of the high-tech sector's raw material needs and supports circular economy jobs.
+            </li>
+          </ul>
+
+          <h4
+            style="color: var(--gold); margin-top: 15px; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.3rem;">
+            Environmental and Geopolitical Impacts:</h4>
+          <p>Domestic mining has left an environmental legacy: over 5,000 closed or inactive mines exist across the
+            country. The government agency <strong>JOGMEC</strong> manages ongoing remediation, such as treating acid
+            mine drainage to prevent heavy metals from polluting local river systems. Meanwhile, to secure critical
+            minerals for electric vehicle batteries, Japan is exploring deep-sea mining of hydrothermal deposits and
+            cobalt crusts in its deep Pacific Exclusive Economic Zone (EEZ). However, marine biologists warn that
+            seafloor mining could release toxic sediment plumes, destroy fragile deep-sea ecosystems, and disrupt unique
+            benthic habitats, highlighting a critical tension between energy security and ocean conservation.</p>
+        </div>
+        <div class="split-image">
+          <!-- Interactive Mineral Chart -->
+          <div class="chart-container">
+            <div class="chart-title">Japan's Mineral Resource Profile</div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Iron Ore (Metallic Manufacturing)</span>
+                <span class="chart-value">100% Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="100"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Copper Ore (Electronics & Wiring)</span>
+                <span class="chart-value">99.9% Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="99.9"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Bauxite / Aluminum (Industrial)</span>
+                <span class="chart-value">100% Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="100"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Coal (Energy & Steelmaking)</span>
+                <span class="chart-value">99.0% Imported</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill" data-width="99"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Limestone (Cement & Construction)</span>
+                <span class="chart-value">0% Imported (100% Self-Sufficient)</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill domestic" data-width="0"></div>
+              </div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-label-container">
+                <span class="chart-label">Silica Stone (Concrete & Glass)</span>
+                <span class="chart-value">0% Imported (100% Self-Sufficient)</span>
+              </div>
+              <div class="chart-bar-bg">
+                <div class="chart-bar-fill domestic" data-width="0"></div>
+              </div>
+            </div>
+
+            <p style="font-size: 0.75rem; text-align: center; margin-top: 15px; opacity: 0.8; font-style: italic;">Note:
+              To overcome high metallic import dependency, Japan relies on strategic stockpiling and extensive "urban
+              mining" of electronic scrap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 6: References & Sources -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>References & Sources</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="fade-in">
+        <ul class="references-list">
+          <li>Geospatial Information Authority of Japan. (n.d.). <em>Typical landforms in Japan: Mountain ranges and
+              volcanic features</em>. Ministry of Land, Infrastructure, Transport and Tourism. <a
+              href="https://www.gsi.go.jp/kikaku/tenkei_top.html"
+              target="_blank">https://www.gsi.go.jp/kikaku/tenkei_top.html</a></li>
+          <li>Japan Meteorological Agency. (2021). <em>Earthquake Early Warning System and J-Alert integration</em>.
+            Ministry of Land, Infrastructure, Transport and Tourism. <a
+              href="https://www.jma.go.jp/jma/en/Activities/eew.html"
+              target="_blank">https://www.jma.go.jp/jma/en/Activities/eew.html</a></li>
+          <li>Japan Organization for Metals and Energy Security (JOGMEC). (2023). <em>Environmental management of closed
+              mines and critical metal exploration</em>. <a href="https://www.jogmec.go.jp/english/"
+              target="_blank">https://www.jogmec.go.jp/english/</a></li>
+          <li>Sumitomo Metal Mining Co., Ltd. (2022). <em>Geology and high-grade gold mineralization of the Hishikari
+              Mine</em>. <a href="https://www.smm.co.jp/en/corp/business/mineral/hishikari/"
+              target="_blank">https://www.smm.co.jp/en/corp/business/mineral/hishikari/</a></li>
+          <li>U.S. Geological Survey. (2018). <em>Tectonic summary of the Japanese archipelago and subduction
+              zones</em>. USGS Earthquake Hazards Program. <a
+              href="https://earthquake.usgs.gov/earthquakes/byregion/japan.php"
+              target="_blank">https://earthquake.usgs.gov/earthquakes/byregion/japan.php</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
 
   <footer>
     <p>&copy; PS120 Earth Science Project.</p>
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Earthquake Simulator Control
+    const triggerBtn = document.getElementById('trigger-eq');
+    const simContainer = document.getElementById('eq-sim-container');
+
+    if (triggerBtn && simContainer) {
+      triggerBtn.addEventListener('click', () => {
+        simContainer.classList.add('eq-active');
+        triggerBtn.disabled = true;
+        triggerBtn.textContent = 'Simulating M8.0 Earthquake...';
+
+        setTimeout(() => {
+          simContainer.classList.remove('eq-active');
+          triggerBtn.disabled = false;
+          triggerBtn.textContent = 'Trigger Seismic Event (M8.0 Sim)';
+        }, 3000);
+      });
+    }
+
+    // Animate Mineral Chart on Load/Scroll
+    const animateChart = () => {
+      document.querySelectorAll('.chart-bar-fill').forEach(bar => {
+        const targetWidth = bar.getAttribute('data-width');
+        // Small delay to trigger animation
+        setTimeout(() => {
+          bar.style.width = targetWidth + '%';
+        }, 200);
+      });
+    };
+
+    // Intersection Observer to trigger chart animation when it comes into view
+    const chartSection = document.querySelector('.chart-container');
+    if (chartSection && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateChart();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(chartSection);
+    } else {
+      // Fallback
+      window.addEventListener('DOMContentLoaded', animateChart);
+    }
+  </script>
 </body>
 
 </html>
