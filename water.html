@@ -4,8 +4,551 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geography of Japan | Water & Landforms</title>
+  <title>Geography of Japan | Landforms & Hydrological Processes</title>
+  <meta name="description"
+    content="Explore weathering, mass wasting, river dynamics, wind erosion, volcanic deserts, and glacial features across Japan.">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Specific styles for Landforms page widgets */
+
+    /* Landslide & Sabo Dam Simulator Styles */
+    .landslide-sim-container {
+      border: var(--border-gold);
+      background-color: var(--bg-cream-dark);
+      padding: 25px;
+      position: relative;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      box-shadow: 8px 8px 0 var(--indigo);
+      border-radius: 4px;
+    }
+
+    .sim-grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .sim-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .landslide-sim-viewport {
+      height: 300px;
+      border: 2px solid var(--indigo);
+      background: linear-gradient(to bottom, #dbe4ee, #f0f4f8);
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hillside slope */
+    .hillside {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 48%, #4a5c43 48%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hillside-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 47.5%, #2e3e29 47.5%, #2e3e29 48.5%, transparent 48.5%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Sabo Dam graphic element */
+    .sabo-dam-element {
+      position: absolute;
+      bottom: 60px;
+      left: 170px;
+      width: 28px;
+      height: 65px;
+      background-color: #6c757d;
+      border: 2px solid var(--indigo);
+      z-index: 4;
+      display: none;
+      border-radius: 2px;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(0, 0, 0, 0.15) 6px, rgba(0, 0, 0, 0.15) 8px),
+        repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(0, 0, 0, 0.15) 6px, rgba(0, 0, 0, 0.15) 8px);
+    }
+
+    .sabo-dam-element.active {
+      display: block;
+    }
+
+    .sabo-dam-label {
+      position: absolute;
+      bottom: 130px;
+      left: 145px;
+      background-color: var(--indigo);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--gold);
+      z-index: 5;
+      font-family: var(--font-heading);
+      display: none;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .sabo-dam-element.active+.sabo-dam-label {
+      display: block;
+    }
+
+    /* Village houses at the bottom right */
+    .village {
+      position: absolute;
+      bottom: 10px;
+      right: 25px;
+      display: flex;
+      gap: 15px;
+      z-index: 5;
+    }
+
+    .house {
+      width: 32px;
+      height: 28px;
+      background-color: #e3d5ca;
+      border: 2px solid var(--indigo);
+      position: relative;
+      border-radius: 2px;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.6s ease;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .house::before {
+      content: '';
+      position: absolute;
+      top: -14px;
+      left: -4px;
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 14px solid var(--crimson);
+    }
+
+    .house-destroyed {
+      transform: translateY(8px) rotate(22deg) scaleY(0.5);
+      background-color: #8a7a71 !important;
+    }
+
+    .house-destroyed::before {
+      border-bottom-color: #5c181f !important;
+    }
+
+    /* Debris flow particles */
+    .debris-flow {
+      position: absolute;
+      top: 20px;
+      left: -30px;
+      width: 45px;
+      height: 45px;
+      background-color: #654321;
+      border: 2px solid var(--indigo);
+      border-radius: 50%;
+      z-index: 3;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .debris-active .debris-flow-1 {
+      animation: slideDebris1 2.8s cubic-bezier(.25, .46, .45, .94) forwards;
+    }
+
+    .debris-active .debris-flow-2 {
+      animation: slideDebris2 2.8s cubic-bezier(.25, .46, .45, .94) 0.25s forwards;
+    }
+
+    .debris-active .debris-flow-3 {
+      animation: slideDebris3 2.8s cubic-bezier(.25, .46, .45, .94) 0.5s forwards;
+    }
+
+    /* Debris flow with Sabo Dam active */
+    .debris-active-mitigated .debris-flow-1 {
+      animation: slideDebrisMitigated1 2.8s cubic-bezier(.25, .46, .45, .94) forwards;
+    }
+
+    .debris-active-mitigated .debris-flow-2 {
+      animation: slideDebrisMitigated2 2.8s cubic-bezier(.25, .46, .45, .94) 0.25s forwards;
+    }
+
+    /* Animations */
+    @keyframes slideDebris1 {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      40% {
+        transform: translate(120px, 90px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(220px, 160px) scale(1.2);
+      }
+
+      100% {
+        transform: translate(360px, 230px) scale(1.5);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes slideDebris2 {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      40% {
+        transform: translate(100px, 75px) scale(1.0);
+      }
+
+      75% {
+        transform: translate(200px, 145px) scale(1.3);
+      }
+
+      100% {
+        transform: translate(330px, 215px) scale(1.6);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes slideDebris3 {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      40% {
+        transform: translate(140px, 105px) scale(0.8);
+      }
+
+      75% {
+        transform: translate(240px, 175px) scale(1.1);
+      }
+
+      100% {
+        transform: translate(380px, 240px) scale(1.4);
+        opacity: 0.9;
+      }
+    }
+
+    /* Mitigated animation paths (stopped at dam) */
+    @keyframes slideDebrisMitigated1 {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(120px, 90px) scale(1.0);
+      }
+
+      100% {
+        transform: translate(165px, 125px) scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideDebrisMitigated2 {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(100px, 75px) scale(1.1);
+      }
+
+      100% {
+        transform: translate(150px, 115px) scale(1.4);
+        opacity: 1;
+      }
+    }
+
+    /* Rain Animation overlay */
+    .rain-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .sim-rain-active .rain-overlay {
+      opacity: 0.65;
+      background: linear-gradient(170deg, transparent, rgba(13, 27, 42, 0.15)),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><line x1="15" y1="0" x2="8" y2="40" stroke="%2387ceeb" stroke-width="1.0" opacity="0.6"/><line x1="55" y1="10" x2="48" y2="50" stroke="%2387ceeb" stroke-width="1.0" opacity="0.6"/><line x1="85" y1="5" x2="78" y2="45" stroke="%2387ceeb" stroke-width="1.0" opacity="0.6"/><line x1="35" y1="40" x2="28" y2="80" stroke="%2387ceeb" stroke-width="1.0" opacity="0.6"/><line x1="75" y1="35" x2="68" y2="75" stroke="%2387ceeb" stroke-width="1.0" opacity="0.6"/></svg>') repeat;
+      background-size: 80px 80px;
+      animation: rainFall 0.7s linear infinite;
+    }
+
+    @keyframes rainFall {
+      0% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: -30px 250px;
+      }
+    }
+
+    /* Simulation Panel Controls */
+    .sim-controls-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      background-color: var(--bg-cream);
+      padding: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 4px;
+      box-shadow: 4px 4px 0 rgba(13, 27, 42, 0.1);
+    }
+
+    .sim-control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sim-control-group label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--indigo);
+      font-family: var(--font-heading);
+    }
+
+    .sim-control-group select {
+      padding: 8px;
+      border: 1px solid var(--indigo);
+      border-radius: 4px;
+      background-color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .sim-status-box {
+      margin-top: 10px;
+      padding: 12px;
+      font-size: 0.85rem;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      font-family: var(--font-body);
+      min-height: 70px;
+      background-color: #fbf9f4;
+      line-height: 1.4;
+    }
+
+    .sim-status-success {
+      background-color: #e8f5e9;
+      border-color: #81c784;
+      color: #2e7d32;
+    }
+
+    .sim-status-danger {
+      background-color: #ffebee;
+      border-color: #e57373;
+      color: #c62828;
+    }
+
+    .sim-status-warning {
+      background-color: #fff8e1;
+      border-color: #ffe082;
+      color: #f57f17;
+    }
+
+    /* Custom Toggle Switch styling */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider-toggle {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider-toggle::before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked+.slider-toggle {
+      background-color: var(--crimson);
+    }
+
+    input:checked+.slider-toggle::before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 5px;
+    }
+
+    .toggle-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--indigo);
+      font-family: var(--font-body);
+    }
+
+    /* River Stats Data Table */
+    .river-stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      font-family: var(--font-body);
+      border: var(--border-gold);
+      box-shadow: 6px 6px 0 var(--indigo-light);
+      background-color: var(--indigo-light);
+      color: var(--text-light);
+    }
+
+    .river-stats-table th {
+      background-color: var(--indigo);
+      color: var(--gold);
+      font-family: var(--font-heading);
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 2px solid var(--gold);
+      font-size: 1rem;
+    }
+
+    .river-stats-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(251, 249, 244, 0.1);
+      font-size: 0.95rem;
+    }
+
+    .river-stats-table tr:hover {
+      background-color: rgba(212, 175, 55, 0.08);
+    }
+
+    .river-stats-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Media Embed Video Wrapper */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border: var(--border-gold);
+      box-shadow: 8px 8px 0 var(--indigo);
+      margin-top: 25px;
+      border-radius: 4px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* References styling */
+    .references-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .references-list li {
+      margin-bottom: 20px;
+      padding-left: 35px;
+      text-indent: -35px;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      border-bottom: 1px solid rgba(13, 27, 42, 0.1);
+      padding-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .references-list li a {
+      color: var(--crimson);
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+
+    .references-list li a:hover {
+      color: var(--gold);
+    }
+  </style>
 </head>
 
 <body>
@@ -26,60 +569,390 @@
     </nav>
   </header>
 
-  <!-- <main style="padding-top: 150px; position: relative; overflow: hidden;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
     <div class="particles-container" data-type="subtle"></div>
     <div class="koi-container"></div>
-    
+
+    <!-- SECTION 1: Weathering & Mass Wasting -->
     <section>
       <div class="section-header fade-in">
-        <h2>Water & Landform Processes</h2>
+        <h2>Weathering & Mass Wasting</h2>
         <div class="divider"></div>
       </div>
-      
+
       <div class="split-layout fade-in">
-        <div class="split-image">
-          <img src="assets/images/river.png" alt="Traditional Japanese vertical ink painting style of a river" class="reveal-ink parallax-img">
-          <div class="shimmer-overlay" style="opacity: 0.2; background: linear-gradient(45deg, transparent 40%, rgba(135,206,235,0.2) 50%, transparent 60%);"></div>
-        </div>
         <div class="split-text">
-          <h3>The Japanese Alps</h3>
-          <p>The "Japanese Alps" is a common name for the Hida, Kiso, and Akaishi Mountains that bisect the main island of Honshu. These dramatic, steep mountain ranges dictate much of the country's terrestrial hydrology.</p>
-          <p>Because the mountains are so close to the sea, Japanese rivers are notoriously short, swift, and steep. Unlike the slow, meandering rivers of large continental plains, Japan's rivers plunge rapidly from high elevations down to the coast.</p>
-          <p>This topography results in immense kinetic energy in the river systems, leading to rapid fluvial erosion and deep V-shaped valleys.</p>
+          <h3>Weathering in Japan</h3>
+          <p>Japan experiences a lot of weathering because it has many mountains, frequent rainfall, and a humid
+            climate. One common process is hydrolysis, where rainwater slowly breaks down rocks such as granite into
+            softer soil. This type of soil is found in many parts of Japan and can become unstable during heavy rain.
+          </p>
+          <p>Another important process is carbonation. Slightly acidic rainwater slowly dissolves limestone and creates
+            caves and karst landscapes. A famous example is the Akiyoshidai Plateau in Yamaguchi Prefecture.</p>
+          <p>Because Japan has steep mountains and many storms, weathered soil and rock can easily move downhill. This
+            often causes landslides, mudflows, and other types of mass wasting.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/karst.jpeg">
+        </div>
+      </div>
+
+      <!-- Case Study and Simulator -->
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3>Major Event: The 2014 Hiroshima Landslides</h3>
+          <p>One example of mass wasting happened in Hiroshima in August 2014. Heavy rainfall caused many landslides and
+            debris flows in residential areas. More than 70 people lost their lives, and many homes were destroyed.</p>
+          <p>I learned that one reason the damage was so severe was because the slopes contained weathered granite soil.
+            After absorbing large amounts of rainwater, the soil became unstable and collapsed.</p>
+          <h3>Government Response and Sabo Dams</h3>
+          <p>After events like the Hiroshima landslides, the Japanese government increased efforts to reduce landslide
+            risks. Hazard maps were improved, warning systems were expanded, and more high-risk areas were monitored.
+          </p>
+          <p>Japan also uses Sabo dams, which are special structures built in mountain valleys. They help slow down mud,
+            rocks, and debris before they reach towns and roads. Together with retaining walls and drainage systems,
+            these measures help protect people living in mountainous areas.</p>
+
+        </div>
+        <div class="split-image">
+          <div class="landslide-sim-container">
+            <h4
+              style="font-family: var(--font-heading); color: var(--indigo); text-align: center; margin-bottom: 15px;">
+              Slope Disaster & Sabo Dam Simulator</h4>
+            <div class="sim-grid-layout">
+              <div class="landslide-sim-viewport">
+                <div class="rain-overlay"></div>
+                <div class="hillside"></div>
+                <div class="hillside-overlay"></div>
+
+                <!-- Debris flow particles -->
+                <div class="debris-flow debris-flow-1"></div>
+                <div class="debris-flow debris-flow-2"></div>
+                <div class="debris-flow debris-flow-3"></div>
+
+                <!-- Sabo Dam -->
+                <div class="sabo-dam-element" id="sabo-block"></div>
+                <span class="sabo-dam-label">Sabo Dam Active</span>
+
+                <!-- Village -->
+                <div class="village">
+                  <div class="house" id="house-1"></div>
+                  <div class="house" id="house-2"></div>
+                </div>
+              </div>
+
+              <div class="sim-controls-panel">
+                <div class="sim-control-group">
+                  <label for="rain-intensity">Rainfall Level</label>
+                  <select id="rain-intensity">
+                    <option value="1">Normal Rain</option>
+                    <option value="2">Heavy Storm</option>
+                    <option value="3">Torrential Rain (200mm+)</option>
+                  </select>
+                </div>
+
+                <div class="sim-control-group">
+                  <span class="toggle-text">Sabo Dam Protection</span>
+                  <div class="toggle-label-container">
+                    <label class="switch">
+                      <input type="checkbox" id="sabo-mitigation">
+                      <span class="slider-toggle"></span>
+                    </label>
+                    <span class="toggle-text" id="toggle-status">Inactive</span>
+                  </div>
+                </div>
+
+                <button class="btn" id="trigger-landslide"
+                  style="padding: 10px; font-size: 0.8rem; width: 100%;">Trigger Storm</button>
+
+                <div class="sim-status-box sim-status-warning" id="sim-status">
+                  Simulator ready. Select rainfall intensity and toggle Sabo dam protection, then click "Trigger Storm".
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <div class="wave-divider"></div>
+
+    <!-- SECTION 2: River Hydrology & Water Erosion -->
     <section class="dark-section">
       <div class="section-header fade-in">
-        <h2>Erosion & Coastal Plains</h2>
+        <h2>Water Erosion</h2>
         <div class="divider"></div>
       </div>
 
-      <div class="cards-grid">
-        <div class="card fade-in">
-          <h3>Weathering & Erosion</h3>
-          <p>The combination of steep mountainous terrain, frequent tectonic tremors, and heavy precipitation (especially during typhoon season) makes Japan highly susceptible to extreme weathering and mass wasting events, such as landslides and mudflows.</p>
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Short, Steep, and Fast Rivers</h3>
+          <p>Japan's rivers are generally short, steep, and fast because mountains cover much of the country. Heavy
+            rainfall and typhoons make river erosion an important process in many regions. In my opinion, Japan's rivers
+            show how closely mountains, weather, and daily life are connected.</p>
+          <h3 class="dark-section-text">Impact on Communities</h3>
+          <p>River erosion can affect communities during periods of heavy rain and typhoons. Riverbanks may erode,
+            sediment can be carried downstream, and flooding may damage homes, farmland, and roads. At the same time,
+            rivers provide fresh water, support agriculture, and help generate hydroelectric power.</p>
         </div>
-        <div class="card fade-in">
-          <h3>Fluvial Processes</h3>
-          <p>As the swift rivers reach the ocean, they suddenly lose their velocity, depositing massive amounts of sediment. Over millennia, this fluvial deposition has created the small but vital coastal plains where almost all of Japanese agriculture and urban development take place.</p>
+        <div class="split-image">
+          <img src="assets/images/japanalps.jpg"
+            alt="Traditional Japanese ink-wash style painting of a fast-flowing river through steep mountains"
+            class="reveal-ink">
         </div>
-        <div class="card fade-in">
-          <h3>The Kanto Plain</h3>
-          <p>The largest of these coastal plains is the Kanto Plain, home to Tokyo. Despite its size relative to the rest of the country, it only covers about 17,000 square kilometers—a testament to how scarce flat land is in the archipelago.</p>
+      </div>
+
+      <!-- River Comparison Data Table -->
+      <div class="fade-in" style="padding: 0 10px;">
+        <h3 class="dark-section-text" style="text-align: center; margin-bottom: 15px;">Profile of Japan's Major
+          Hydrological Channels</h3>
+        <table class="river-stats-table">
+          <thead>
+            <tr>
+              <th>River System</th>
+              <th>Source Region</th>
+              <th>Total Length</th>
+              <th>Avg. Discharge</th>
+              <th>Estuary / Outlet</th>
+              <th>Channel Morphology</th>
+              <th>Primary Mitigation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Shinano River</strong> (Chikuma)</td>
+              <td>Mt. Kobushi (Chichibu Mountains)</td>
+              <td>367 km (228 mi) - Longest</td>
+              <td>~500 m³/s</td>
+              <td>Sea of Japan (Niigata Delta)</td>
+              <td>Straight upper gorges, meandering & braided lower reaches</td>
+              <td>Sekiya Diversion Channel, Ohzu flood bypass channel</td>
+            </tr>
+            <tr>
+              <td><strong>Tone River</strong> ("Bandotaro")</td>
+              <td>Mt. Ominakami (Echigo Range)</td>
+              <td>322 km (200 mi)</td>
+              <td>~290 m³/s</td>
+              <td>Pacific Ocean (Choshi Estuary)</td>
+              <td>Highly engineered, artificial bends, historically meandering</td>
+              <td>Watarase Retarding Basin, super-levees, Edo-era channel diversion</td>
+            </tr>
+            <tr>
+              <td><strong>Ishikari River</strong></td>
+              <td>Mt. Ishikari (Daisetsuzan Range)</td>
+              <td>268 km (167 mi)</td>
+              <td>~480 m³/s</td>
+              <td>Sea of Japan (Ishikari Bay)</td>
+              <td>Historically highly meandering, now artificially straightened</td>
+              <td>Cut-off channel projects, wetland retarding areas, headwater Sabo dams</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split-layout fade-in" style="margin-top: 40px;">
+        <div class="split-text">
+          <h3 class="dark-section-text">Mitigation for River Erosion</h3>
+          <p>The Japanese government uses levees, flood-control channels, riverbank reinforcement, and flood-retention
+            basins to reduce erosion and flooding. These systems help protect nearby communities and manage excess water
+            during major storms.</p>
         </div>
       </div>
     </section>
 
-  </main> -->
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 3: Wind Erosion & Sand Dunes -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Wind Erosion & Aeolian Systems</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>Wind Erosion in Japan</h3>
+          <p>Japan does not experience strong wind erosion compared to dry desert countries because it receives a large
+            amount of rainfall throughout the year. Water erosion and landslides are generally much more significant.
+          </p>
+          <p>However, wind erosion still occurs in some coastal areas where there is loose sand. The most famous example
+            is the Tottori Sand Dunes, where strong coastal winds continuously move and reshape the sand. Although wind
+            erosion is not a major hazard in Japan, it can affect coastal landscapes and nearby vegetation.</p>
+          <h3>Government Mitigation</h3>
+          <p>To reduce the effects of wind erosion, the Japanese government uses coastal forests, vegetation planting,
+            and land management projects to stabilize sand and protect nearby communities.</p>
+          <p>These efforts help prevent sand movement, protect roads and farmland, and preserve important natural
+            environments such as the Tottori Sand Dunes.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/tottori.jpg" alt="Tottori Sand Dunes" class="reveal-ink">
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 4: Deserts & Desertification -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Deserts and Desertification</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">No True Deserts in Japan</h3>
+          <p>Japan does not have any true deserts because the country receives a large amount of rainfall throughout the
+            year. In fact, many parts of Japan receive much more precipitation than the amount normally associated with
+            desert climates.
+          </p>
+          <p>When I researched this topic, I learned that Japan is considered too wet to develop natural deserts.
+            However, there are a few places that look similar to deserts and are often discussed when studying Japanese
+            landforms.</p>
+
+          <h3 class="dark-section-text" style="margin-top: 20px;">Desertification in Japan</h3>
+          <p>Desertification is not currently a major problem in Japan because of the country's humid climate and
+            abundant rainfall. Instead of deserts expanding, some areas such as the Tottori Sand Dunes actually face the
+            opposite challenge: plants and vegetation gradually grow over the sand.
+          </p>
+          <p>To preserve these unique landscapes, local governments manage vegetation and protect the dune environment
+            so that future generations can continue to enjoy them.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 5: Glaciers & Glacial Landforms -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Glaciers</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>Glaciers in Japan</h3>
+          <p>Japan has only a few active glaciers, and they are located in the Tateyama Mountain Range in Toyama
+            Prefecture. For many years, people believed that Japan did not have any glaciers. However, researchers
+            confirmed that several snow patches in Tateyama are actually moving glaciers and officially recognized them
+            in 2012. These glaciers are considered some of the southernmost active glaciers in East Asia.</p>
+          <p>When I learned this, I was surprised because I always thought glaciers only existed in very cold places
+            such as Alaska or the Himalayas. The heavy snowfall in the Japanese Alps allows glaciers to survive even in
+            Japan.
+          </p>
+          <h3>Glacial Features and Their Impact</h3>
+          <p>Although glaciers are limited to a few mountain areas, both modern and ancient glaciers have helped shape
+            Japan's landscape. Glacial landforms such as cirques can still be seen in the Japanese Alps today. These
+            features attract hikers, tourists, and researchers from around the country.</p>
+          <p>Glacial and snowmelt water also contributes to rivers and water resources in mountain regions. In addition,
+            glaciers provide valuable information for scientists studying climate change and environmental conditions.
+            While glaciers are not a major part of everyday life in Japan, they continue to influence tourism,
+            scientific research, and mountain ecosystems.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/tateyama_glacier.png"
+            alt="Sumi-e painting depicting the snowy peaks of Tateyama and the Gozenzawa Glacier nestled in its cirque"
+            class="reveal-ink">
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+  </main>
 
   <footer>
     <p>&copy; PS120 Earth Science Project.</p>
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Interactive Landslide & Sabo Dam Simulator Controller -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const triggerBtn = document.getElementById('trigger-landslide');
+      const mitigationToggle = document.getElementById('sabo-mitigation');
+      const toggleStatus = document.getElementById('toggle-status');
+      const rainSlider = document.getElementById('rain-intensity');
+      const simViewport = document.querySelector('.landslide-sim-viewport');
+      const statusBox = document.getElementById('sim-status');
+      const house1 = document.getElementById('house-1');
+      const house2 = document.getElementById('house-2');
+      const saboBlock = document.getElementById('sabo-block');
+
+      // Sync toggle checkbox with status text and element visibility
+      mitigationToggle.addEventListener('change', () => {
+        if (mitigationToggle.checked) {
+          toggleStatus.textContent = 'Active';
+          toggleStatus.style.color = 'var(--crimson)';
+          saboBlock.classList.add('active');
+        } else {
+          toggleStatus.textContent = 'Inactive';
+          toggleStatus.style.color = 'var(--indigo)';
+          saboBlock.classList.remove('active');
+        }
+      });
+
+      triggerBtn.addEventListener('click', () => {
+        // Disable button during simulation to prevent clicks
+        triggerBtn.disabled = true;
+        triggerBtn.style.opacity = '0.5';
+
+        // Reset simulation states
+        simViewport.classList.remove('sim-rain-active', 'debris-active', 'debris-active-mitigated');
+        house1.classList.remove('house-destroyed');
+        house2.classList.remove('house-destroyed');
+
+        const intensity = rainSlider.value;
+        const isMitigated = mitigationToggle.checked;
+
+        statusBox.className = 'sim-status-box sim-status-warning';
+        statusBox.innerHTML = `<strong>Simulation running:</strong> Weathering has saturated slopes. Rain intensity is <em>${intensity === '1' ? 'Normal' : intensity === '2' ? 'Heavy' : 'Torrential'}</em>. Sabo protection is <em>${isMitigated ? 'ACTIVE' : 'INACTIVE'}</em>...`;
+
+        // Start rainfall animation
+        simViewport.classList.add('sim-rain-active');
+
+        setTimeout(() => {
+          if (intensity === '1') {
+            // Normal Rain: No Landslide
+            statusBox.className = 'sim-status-box sim-status-success';
+            statusBox.innerHTML = `<strong>Stable Slope:</strong> Normal rainfall is absorbed by the mountain slope. No debris flow occurred. The village is safe.`;
+            simViewport.classList.remove('sim-rain-active');
+            triggerBtn.disabled = false;
+            triggerBtn.style.opacity = '1';
+          } else {
+            // Heavy or Torrential Rain: Triggers Landslide
+            if (isMitigated) {
+              // Mitigation Active
+              simViewport.classList.add('debris-active-mitigated');
+              setTimeout(() => {
+                statusBox.className = 'sim-status-box sim-status-success';
+                statusBox.innerHTML = `<strong>Mitigation Success!</strong> The Sabo Dam intercepted the rock and mud debris flow triggered by the storm. Only clear runoff water reached the valley, leaving the village completely unharmed.`;
+                simViewport.classList.remove('sim-rain-active');
+                triggerBtn.disabled = false;
+                triggerBtn.style.opacity = '1';
+              }, 2800);
+            } else {
+              // Mitigation Inactive
+              simViewport.classList.add('debris-active');
+              setTimeout(() => {
+                house1.classList.add('house-destroyed');
+                if (intensity === '3') {
+                  house2.classList.add('house-destroyed');
+                }
+                statusBox.className = 'sim-status-box sim-status-danger';
+                statusBox.innerHTML = `<strong>Disaster!</strong> ${intensity === '2' ? 'Heavy' : 'Torrential'} rainfall triggered a mud/debris flow. With no Sabo Dam to intercept it, the mass wasting event swept down the slope, destroying ${intensity === '2' ? 'one village house' : 'both village houses'} and causing severe damage.`;
+                simViewport.classList.remove('sim-rain-active');
+                triggerBtn.disabled = false;
+                triggerBtn.style.opacity = '1';
+              }, 2800);
+            }
+          }
+        }, 1000); // Wait 1 second of rain before landslide triggers
+      });
+    });
+  </script>
 </body>
 
 </html>
