@@ -4,8 +4,552 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geography of Japan | Oceans & Coastlines</title>
+  <title>Geography of Japan | Oceans, Coastlines & Trade Routes</title>
+  <meta name="description"
+    content="Explore Japan's ocean currents, island geography, trade networks, coastal geomorphology, and marine hazards like typhoons and tsunamis.">
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Specific styles for Oceans and Coastlines page widgets */
+
+    /* Ocean Currents SVG Map Styles */
+    .currents-map-container {
+      display: flex;
+      background-color: var(--bg-cream-dark);
+      border: var(--border-gold);
+      padding: 25px;
+      box-shadow: 8px 8px 0 var(--indigo);
+      border-radius: 4px;
+      gap: 25px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .currents-map-container {
+        flex-direction: column;
+      }
+    }
+
+    .currents-svg-wrapper {
+      flex: 1.2;
+      background-color: var(--indigo);
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      padding: 15px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .currents-svg-wrapper svg {
+      width: 100%;
+      height: auto;
+      max-width: 380px;
+    }
+
+    .current-info-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      background-color: var(--bg-cream);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 4px;
+      min-height: 220px;
+    }
+
+    .current-info-panel h4 {
+      font-family: var(--font-heading);
+      color: var(--indigo);
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 6px;
+    }
+
+    .current-info-panel p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      font-family: var(--font-body);
+    }
+
+    .current-path {
+      fill: none;
+      stroke-width: 5;
+      stroke-linecap: round;
+      cursor: pointer;
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
+      transition: stroke-width 0.3s ease, filter 0.3s ease;
+    }
+
+    .current-path:hover,
+    .current-path.active-path {
+      stroke-width: 8;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+    }
+
+    .kuroshio-line {
+      stroke: var(--crimson);
+    }
+
+    .oyashio-line {
+      stroke: #0288d1;
+    }
+
+    .tsushima-line {
+      stroke: var(--gold);
+    }
+
+    .map-land {
+      fill: #2c3e50;
+      stroke: rgba(251, 249, 244, 0.6);
+      stroke-width: 1.2;
+      transition: fill 0.3s ease;
+    }
+
+    .map-land:hover {
+      fill: #34495e;
+    }
+
+    /* CSS Custom Bar Chart for Trade statistics */
+    .trade-chart-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      background-color: var(--indigo-light);
+      border: var(--border-gold);
+      padding: 25px;
+      box-shadow: 8px 8px 0 var(--indigo);
+      color: var(--text-light);
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .trade-chart-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    .trade-chart-column h4 {
+      color: var(--gold);
+      margin-bottom: 15px;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      border-bottom: 1px solid rgba(251, 249, 244, 0.15);
+      padding-bottom: 6px;
+    }
+
+    .bar-group {
+      margin-bottom: 15px;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      font-family: var(--font-body);
+    }
+
+    .bar-wrapper {
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 14px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 7px;
+      width: 0;
+      /* Animated on load via JS scroll/fade observer hook */
+      transition: width 1.8s cubic-bezier(0.1, 1, 0.1, 1);
+    }
+
+    .fade-in.appear .import-bar-1 {
+      width: 22.1%;
+    }
+
+    .fade-in.appear .import-bar-2 {
+      width: 10.5%;
+    }
+
+    .fade-in.appear .import-bar-3 {
+      width: 9.8%;
+    }
+
+    .fade-in.appear .import-bar-4 {
+      width: 8.5%;
+    }
+
+    .fade-in.appear .export-bar-1 {
+      width: 19.4%;
+    }
+
+    .fade-in.appear .export-bar-2 {
+      width: 19.3%;
+    }
+
+    .fade-in.appear .export-bar-3 {
+      width: 7.2%;
+    }
+
+    .fade-in.appear .export-bar-4 {
+      width: 7.1%;
+    }
+
+    .import-bar {
+      background: linear-gradient(90deg, var(--gold), #f3e5f5);
+      background-color: var(--gold);
+    }
+
+    .export-bar {
+      background: linear-gradient(90deg, var(--crimson), #ff8a80);
+      background-color: var(--crimson);
+    }
+
+    /* Tsunami & Sea Wall Simulator Styles */
+    .tsunami-sim-container {
+      border: var(--border-gold);
+      background-color: var(--bg-cream-dark);
+      padding: 25px;
+      position: relative;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      box-shadow: 8px 8px 0 var(--indigo);
+      border-radius: 4px;
+    }
+
+    .tsunami-sim-viewport {
+      height: 300px;
+      border: 2px solid var(--indigo);
+      background: linear-gradient(to bottom, #dbe4ee, #f0f4f8);
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.1s ease;
+      /* For earthquake shaking */
+    }
+
+    /* Earthquake viewport shake */
+    @keyframes viewportShake {
+      0% {
+        transform: translate(1px, 1px) rotate(0deg);
+      }
+
+      10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+      }
+
+      20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+      }
+
+      30% {
+        transform: translate(0px, 2px) rotate(0deg);
+      }
+
+      40% {
+        transform: translate(1px, -1px) rotate(1deg);
+      }
+
+      50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+      }
+
+      60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+      }
+
+      70% {
+        transform: translate(2px, 1px) rotate(-1deg);
+      }
+
+      80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+      }
+
+      90% {
+        transform: translate(2px, 2px) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+      }
+    }
+
+    .viewport-shake {
+      animation: viewportShake 0.8s linear infinite;
+    }
+
+    .sim-sky {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(to bottom, #bbdefb, #e3f2fd);
+      transition: background 1s ease;
+      z-index: 1;
+    }
+
+    .sim-sky.eq-active {
+      background: linear-gradient(to bottom, #546e7a, #37474f);
+    }
+
+    /* Seabed slope and profile shapes */
+    .seabed-slope {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Coast contours represented in canvas-like style */
+    .seabed-slope-straight {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 170px;
+      height: 180px;
+      background: linear-gradient(135deg, transparent 45%, #bcaaa4 45%);
+      /* Sandy color slope */
+      border-left: 2px solid var(--indigo);
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    .seabed-slope-ria {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 210px;
+      height: 180px;
+      background: linear-gradient(135deg, transparent 40%, #7e57c2 40%);
+      /* V-shape rocky tint */
+      border-left: 3px dashed var(--crimson);
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Perspective bay lines to represent V-shape ria */
+    .ria-funnel-guide {
+      position: absolute;
+      top: 120px;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      background:
+        linear-gradient(28deg, transparent 65%, rgba(13, 27, 42, 0.1) 65%, rgba(13, 27, 42, 0.1) 66%, transparent 66%),
+        linear-gradient(-28deg, transparent 65%, rgba(13, 27, 42, 0.1) 65%, rgba(13, 27, 42, 0.1) 66%, transparent 66%);
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Seawall Barrier */
+    .seawall-element {
+      position: absolute;
+      bottom: 60px;
+      /* Aligned with shoreline */
+      left: 200px;
+      width: 25px;
+      height: 0px;
+      /* Set dynamically */
+      background-color: #90a4ae;
+      border: 2px solid var(--indigo);
+      z-index: 4;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.1) 5px, rgba(0, 0, 0, 0.1) 10px);
+      opacity: 0;
+    }
+
+    .seawall-element.active {
+      opacity: 1;
+    }
+
+    .seawall-label {
+      position: absolute;
+      bottom: 120px;
+      left: 175px;
+      background-color: var(--indigo);
+      color: var(--gold);
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid var(--gold);
+      z-index: 5;
+      font-family: var(--font-heading);
+      display: none;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .seawall-element.active+.seawall-label {
+      display: block;
+    }
+
+    /* Tsunami Wave */
+    .tsunami-wave-element {
+      position: absolute;
+      bottom: 0;
+      left: -260px;
+      width: 250px;
+      height: 40px;
+      /* Configured in JS */
+      background: linear-gradient(to right, rgba(13, 27, 42, 0.7), rgba(2, 136, 209, 0.95));
+      border-top-right-radius: 80% 100%;
+      border-top: 3px solid rgba(255, 255, 255, 0.7);
+      z-index: 3;
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: bottom left;
+    }
+
+    /* Wave propagation animation classes */
+    .wave-active {
+      animation: wavePropagate 3.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes wavePropagate {
+      0% {
+        left: -260px;
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.95;
+      }
+
+      75% {
+        left: 20px;
+        opacity: 0.95;
+      }
+
+      100% {
+        left: 170px;
+        opacity: 0.9;
+        transform: scaleX(1.3);
+      }
+    }
+
+    /* Village Houses */
+    .sim-village {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 5;
+    }
+
+    .sim-house {
+      width: 30px;
+      height: 26px;
+      background-color: #efebe9;
+      border: 2px solid var(--indigo);
+      position: relative;
+      border-radius: 2px;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.6s ease;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .sim-house::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -3px;
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-bottom: 12px solid var(--crimson);
+    }
+
+    .sim-house.flooded {
+      transform: translateY(3px) rotate(6deg);
+      background-color: #b0bec5 !important;
+    }
+
+    .sim-house.flooded::before {
+      border-bottom-color: var(--crimson-dark) !important;
+    }
+
+    .sim-house.destroyed {
+      transform: translateY(12px) rotate(35deg) scaleY(0.4) scaleX(0.7);
+      background-color: #8d6e63 !important;
+    }
+
+    .sim-house.destroyed::before {
+      border-bottom-color: #5d4037 !important;
+    }
+
+    /* Video Embed Wrapper styling */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border: var(--border-gold);
+      box-shadow: 8px 8px 0 var(--indigo);
+      margin-top: 25px;
+      border-radius: 4px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* References section at page bottom */
+    .page-references-list {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .page-references-list li {
+      margin-bottom: 15px;
+      padding-left: 30px;
+      text-indent: -30px;
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      border-bottom: 1px solid rgba(13, 27, 42, 0.08);
+      padding-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .page-references-list li a {
+      color: var(--crimson);
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+
+    .page-references-list li a:hover {
+      color: var(--gold);
+    }
+  </style>
 </head>
 
 <body>
@@ -26,60 +570,515 @@
     </nav>
   </header>
 
-  <!-- <main style="padding-top: 150px; position: relative; overflow: hidden;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
     <div class="particles-container" data-type="subtle"></div>
     <div class="koi-container"></div>
-    
-    <section class="dark-section" style="border-top: none;">
+
+    <!-- SECTION 1: Oceans, Currents & Island Geography -->
+    <section>
       <div class="section-header fade-in">
-        <h2>Oceans & Coastlines</h2>
+        <h2>Oceans & currents</h2>
         <div class="divider"></div>
       </div>
-      
-      <div class="split-layout reverse fade-in">
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>Surrounding Ocean Currents</h3>
+          <p>Japan is surrounded by different oceans. To the east is the Pacific Ocean, and to the west is the Sea of
+            Japan. I learned that three main ocean currents affect Japan's weather and fishing.</p>
+          <p>The first is the <strong>Kuroshio Current</strong>. It is a warm current that flows from the south along
+            Japan's east coast. It makes the winters warmer and more humid. The second is the <strong>Oyashio
+              Current</strong>. It is a cold current that flows from the north. It carries cold water with lots of
+            nutrients. Where the Kuroshio and Oyashio currents meet, it creates one of the best fishing areas in the
+            world.</p>
+          <p>The third is the <strong>Tsushima Current</strong>. It is a warm branch that goes into the Sea of Japan on
+            the west side. When I researched this topic, I learned it warms the water and brings moisture, which causes
+            heavy snow along the coast in winter.</p>
+        </div>
         <div class="split-image">
-          <img src="assets/images/ocean.png" alt="Traditional Japanese wave art, Hokusai style" class="reveal-ink parallax-img">
+          <div class="currents-map-container">
+            <div class="currents-svg-wrapper">
+              <svg viewBox="0 0 400 400" id="currents-map">
+                <!-- SVG markers for arrows -->
+                <defs>
+                  <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"
+                    orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#c1121f" />
+                  </marker>
+                  <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"
+                    orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#0288d1" />
+                  </marker>
+                  <marker id="arrow-orange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"
+                    orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d4af37" />
+                  </marker>
+                </defs>
+
+                <!-- Sea Background -->
+                <rect width="400" height="400" fill="#0d1b2a" rx="4" />
+
+                <!-- Japanese Islands Outline -->
+                <!-- Okinawa -->
+                <path class="map-land" d="M 35,370 L 45,365 L 30,380 Z" />
+                <!-- Kyushu -->
+                <path class="map-land" d="M 90,300 L 115,295 L 120,320 L 105,340 L 85,325 Z" />
+                <!-- Shikoku -->
+                <path class="map-land" d="M 140,285 L 170,275 L 160,295 L 135,300 Z" />
+                <!-- Honshu -->
+                <path class="map-land"
+                  d="M 265,110 L 280,125 L 285,150 L 255,200 L 210,230 L 160,260 L 120,290 L 110,270 L 135,250 L 180,210 L 220,180 L 250,140 Z" />
+                <!-- Hokkaido -->
+                <path class="map-land" d="M 280,60 L 310,50 L 340,80 L 330,105 L 305,95 L 290,100 L 275,85 Z" />
+
+                <!-- Currents paths (Interactive) -->
+                <!-- Tsushima Current (Warm, Orange/Gold) -->
+                <path id="tsushima-path" class="current-path tsushima-line" d="M 50,320 Q 80,250 130,190 T 230,110"
+                  marker-end="url(#arrow-orange)" />
+
+                <!-- Kuroshio Current (Warm, Red) -->
+                <path id="kuroshio-path" class="current-path kuroshio-line"
+                  d="M 80,365 Q 150,320 205,275 T 295,230 T 370,180" marker-end="url(#arrow-red)" />
+
+                <!-- Oyashio Current (Cold, Blue) -->
+                <path id="oyashio-path" class="current-path oyashio-line" d="M 370,80 Q 330,110 300,165 T 285,235"
+                  marker-end="url(#arrow-blue)" />
+
+                <!-- Label texts -->
+                <text x="130" y="30" fill="rgba(251, 249, 244, 0.4)" font-size="10" font-family="sans-serif"
+                  letter-spacing="1">SEA OF JAPAN</text>
+                <text x="260" y="320" fill="rgba(251, 249, 244, 0.4)" font-size="10" font-family="sans-serif"
+                  letter-spacing="1">PACIFIC OCEAN</text>
+              </svg>
+            </div>
+
+            <div class="current-info-panel" id="current-info-panel">
+              <h4 id="current-title">Ocean Currents</h4>
+              <p id="current-desc">Hover over the current paths (red, blue, or gold arrows) on the map to inspect their
+                geomorphic features and climatic impacts on the Japanese archipelago.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3>Island Geography & Marine Resources</h3>
+          <p>Japan is an archipelago, which means a group of islands. It has five main islands and more than 14,000
+            smaller islands. Because of all these islands, Japan has a very large <strong>Exclusive Economic
+              Zone (EEZ)</strong>, which is the 6th largest in the world. Even though Japan is small on land, it has a
+            huge ocean area. This gives Japan a lot of fish and potential mineral resources on the ocean floor.</p>
+          <p>I also learned that the ocean is very important for Japanese culture. The sea currents shaped a diet rich
+            in fish and seaweed. Many traditional stories (like Ryujin the dragon god) and beautiful sea shrines (like
+            Itsukushima) are also closely related to the ocean.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/EEZ.jpg" alt="Exclusive Economic Zone of Japan" class="reveal-ink parallax-img">
           <div class="shimmer-overlay" style="opacity: 0.4;"></div>
         </div>
+      </div>
+
+      <div class="split-layout fade-in">
         <div class="split-text">
-          <h3>The Surrounding Seas</h3>
-          <p>Japan is entirely surrounded by water. To the east and south lies the vast Pacific Ocean, while the west is bordered by the Sea of Japan (East Sea), separating the archipelago from the Asian mainland.</p>
-          <p>This insular geography has defined Japan's historical isolation as well as its modern reliance on maritime trade. Japan has one of the longest coastlines in the world, stretching over 29,000 kilometers, deeply indented with natural harbors, bays, and inlets.</p>
-          <p>The convergence of ocean currents around these islands creates some of the most dynamic and productive marine environments on the planet.</p>
+          <h3>Flooding in Japan</h3>
+          <p>Flooding is a major issue in Japan. It happens almost every year during the rainy season in June and July,
+            and when typhoons strike between August and October. Because Japan has steep mountains, heavy rain can
+            quickly fill the rivers and overflow into nearby towns and cities.</p>
+          <p>To prepare for floods, the government has built tall concrete walls (levees) along the riverbanks, flood
+            bypass channels, and large retarding basins to hold extra water. They also created advanced satellite
+            weather radar systems like XRAIN and publish hazard maps so we know where to evacuate during a storm.
+          </p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/flood.jpg" alt="A river in Japan with flood defenses" class="reveal-ink">
         </div>
       </div>
     </section>
 
     <div class="wave-divider"></div>
-    <section>
+
+    <!-- SECTION 2: Land and River Trade Routes -->
+    <section class="dark-section">
       <div class="section-header fade-in">
-        <h2>Marine Geography & Economy</h2>
+        <h2>Trade routes & partners</h2>
         <div class="divider"></div>
       </div>
 
-      <div class="cards-grid">
-        <div class="card fade-in">
-          <h3>The Kuroshio Current</h3>
-          <p>Also known as the "Black Current," this strong western boundary current brings warm tropical water from the south along Japan's eastern coast. It significantly warms the climate of southern Japan and sustains rich coral reefs and diverse marine life.</p>
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Geological Impact on Inland Trade</h3>
+          <p>Japan has many steep mountains, so its rivers are short and fast. This means rivers are not very useful for
+            carrying cargo across the country, unlike flat countries. Historically, people had
+            to travel by land. I learned about two historic roads: the <strong>Tokaido</strong> was a flat road along
+            the coast, which was fast but often flooded by rivers and storm surges. The <strong>Nakasendo</strong> went
+            through the rugged central mountains. It was steep and slow, but it was safe from ocean storms.</p>
+          <p>Today, Japan uses expressways and bullet trains (Shinkansen). Because of the mountains, they had to build
+            many tunnels, like the Kan'etsu Tunnel and the undersea Seikan Tunnel between Honshu and Hokkaido. They also
+            use seismic engineering to protect these routes from earthquakes.</p>
         </div>
-        <div class="card fade-in">
-          <h3>The Oyashio Current</h3>
-          <p>Flowing down from the north, this cold, nutrient-rich subarctic current meets the warm Kuroshio current off the eastern coast of Japan. The convergence zone creates exceptionally rich fishing grounds, fundamental to the Japanese diet and fishing economy.</p>
+        <div class="split-image">
+          <!-- Trade partners CSS Bar Chart -->
+          <div class="trade-chart-container">
+            <div class="trade-chart-column">
+              <h4>Top Import Partners (% Share)</h4>
+              <div class="bar-group">
+                <div class="bar-label"><span>China</span><span>22.1%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill import-bar import-bar-1" style="--bar-width: 22.1%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>United States</span><span>10.5%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill import-bar import-bar-2" style="--bar-width: 10.5%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>Australia</span><span>9.8%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill import-bar import-bar-3" style="--bar-width: 9.8%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>United Arab Emirates / KSA</span><span>8.5%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill import-bar import-bar-4" style="--bar-width: 8.5%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="trade-chart-column">
+              <h4>Top Export Partners (% Share)</h4>
+              <div class="bar-group">
+                <div class="bar-label"><span>China</span><span>19.4%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill export-bar export-bar-1" style="--bar-width: 19.4%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>United States</span><span>19.3%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill export-bar export-bar-2" style="--bar-width: 19.3%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>South Korea</span><span>7.2%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill export-bar export-bar-3" style="--bar-width: 7.2%;"></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-label"><span>Taiwan</span><span>7.1%</span></div>
+                <div class="bar-wrapper">
+                  <div class="bar-fill export-bar export-bar-4" style="--bar-width: 7.1%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card fade-in">
-          <h3>Ports & Trade Routes</h3>
-          <p>Due to the lack of extensive natural resources on land, Japan relies heavily on international maritime trade. Major coastal cities like Yokohama, Kobe, and Osaka developed around massive natural ports, functioning as the vital economic lifelines of the nation.</p>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Maritime Trade & Shipping Routes</h3>
+          <p>Japan does not have many natural resources like oil or coal, so it must import them by sea. Over 99% of
+            Japan's trade goes by shipping routes. The most critical route goes
+            through the Strait of Malacca and the South China Sea. This route brings crude oil from the Middle East. If
+            this route is blocked, it would be a big problem for Japan's energy.</p>
+          <p>Historically, the **Kitamaebune** cargo ships were very important. They connected Osaka and Hokkaido
+            through the Sea of Japan, carrying kelp, rice, and fish fertilizer, which helped port towns grow.</p>
+          <p>Today, Japan's major ports such as Tokyo, Yokohama, Nagoya, Kobe, and Osaka continue to connect the country
+            to global shipping networks.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/trading.svg" alt="Map of sea routes" class="reveal-ink">
         </div>
       </div>
     </section>
 
-  </main> -->
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 3: Coastline Geomorphology -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Coastline geomorphology</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>Coastline Shapes & Composition</h3>
+          <p>Japan has a very long and irregular coastline. One of the most famous coastal landforms is the ria
+            coastline, which creates many narrow bays and natural harbors. Japan also has rocky coastlines such as the
+            Tojinbo Cliffs and sandy coastlines like the Tottori Sand Dunes.</p>
+        </div>
+        <div class="split-text">
+          <h3>Positive and Negative Impacts</h3>
+          <p>Japan's coastline provides many benefits. The deep bays of ria coasts create excellent natural harbors that
+            support fishing, shipping, and trade.</p>
+          <p>However, the same coastline can also increase natural hazards. During the 2011 tsunami, some ria coast
+            areas in northeastern Japan experienced very large waves because the narrow bays concentrated the incoming
+            water. This shows how the coastline can be both helpful and dangerous.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 4: Marine Hazards: Typhoons and Tsunamis -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Typhoons & tsunamis</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Typhoons & Storm Surges</h3>
+          <p>Japan experiences several typhoons every year, especially from late summer to early fall. These storms
+            often bring strong winds, heavy rainfall, flooding, and coastal storm surges.</p>
+          <p>One recent example is Typhoon Hagibis (2019), which caused severe flooding across eastern Japan and damaged
+            thousands of homes. Because typhoons occur regularly, flood prevention has become an important part of
+            Japan's infrastructure planning.</p>
+          <p>To reduce flood risks, the Japanese government has built levees, floodgates, and large drainage systems
+            such as the Metropolitan Area Outer Underground Discharge Channel (G-Cans) near Tokyo. These projects help
+            protect cities from heavy rainfall and overflowing rivers.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/Gcans.jpg" alt="Metropolitan Area Outer Underground Discharge Channel"
+            class="reveal-ink">
+        </div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Tsunamis & Coastal Vulnerability</h3>
+          <p>Tsunamis are one of the most serious natural hazards in Japan because the country is located along active
+            tectonic plate boundaries. Unlike storm surges, tsunamis are caused by large undersea earthquakes.</p>
+          <p>The most significant example is the 2011 Great East Japan Earthquake and Tsunami. A magnitude 9.0
+            earthquake occurred off the coast of northeastern Japan and generated a massive tsunami. In some locations,
+            waves reached nearly 40 meters high and traveled several kilometers inland. Nearly 20,000 people lost their
+            lives, and entire coastal communities were destroyed.</p>
+          <p>This event is especially meaningful to me because I grew up in Natori, Miyagi Prefecture, one of the areas
+            affected by the disaster. Although my neighborhood was located on higher ground, I witnessed how much the
+            tsunami changed nearby communities and coastlines.</p>
+          <p>After 2011, Japan expanded its tsunami warning systems, evacuation routes, seawalls, and disaster education
+            programs. Today, tsunami preparedness is an important part of life in many coastal regions.</p>
+
+        </div>
+        <div class="split-image">
+          <div class="video-wrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/f2K_g9UjYok?si=Un4HuQRmiEV7ll1v"
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+
+
+  </main>
 
   <footer>
     <p>&copy; PS120 Earth Science Project.</p>
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Ocean Currents Map Hover Handler -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currents = {
+        'kuroshio-path': {
+          title: 'Kuroshio Current ("Black Current")',
+          desc: 'A strong, warm western boundary current flowing north along eastern Japan. It brings warm tropical waters, warming southern coastal winter temperatures and increasing humidity. It also transfers heat that fuels typhoons as they approach land.'
+        },
+        'oyashio-path': {
+          title: 'Oyashio Current ("Kuril Current")',
+          desc: 'A cold, subarctic current flowing south along Hokkaido and northern Honshu. It carries nutrient-rich, oxygenated waters. The zone where Oyashio meets Kuroshio off the east coast of Japan forms one of the world\'s richest fishing grounds.'
+        },
+        'tsushima-path': {
+          title: 'Tsushima Current',
+          desc: 'A branch of the warm Kuroshio current entering the Sea of Japan. It warms the western coastline and increases ocean surface evaporation, feeding the moisture that Siberian monsoons turn into heavy winter snowfalls in "snow country" regions.'
+        }
+      };
+
+      const paths = document.querySelectorAll('.current-path');
+      const titleEl = document.getElementById('current-title');
+      const descEl = document.getElementById('current-desc');
+
+      paths.forEach(path => {
+        path.addEventListener('mouseenter', (e) => {
+          // Highlight path
+          paths.forEach(p => p.classList.remove('active-path'));
+          path.classList.add('active-path');
+
+          // Update info panel
+          const info = currents[path.id];
+          if (info) {
+            titleEl.textContent = info.title;
+            descEl.textContent = info.desc;
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- Interactive Tsunami & Sea Wall Simulator Controller -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const triggerBtn = document.getElementById('trigger-tsunami');
+      const coastSelect = document.getElementById('coast-profile');
+      const wallSelect = document.getElementById('wall-height');
+      const waveSelect = document.getElementById('tsunami-scale');
+
+      const viewport = document.getElementById('tsunami-viewport');
+      const sky = document.getElementById('sim-sky');
+      const slopeStraight = document.getElementById('slope-straight');
+      const slopeRia = document.getElementById('slope-ria');
+      const riaGuide = document.getElementById('ria-guide');
+      const seawall = document.getElementById('seawall');
+      const seawallLbl = document.getElementById('seawall-lbl');
+      const wave = document.getElementById('tsunami-wave');
+      const statusBox = document.getElementById('tsunami-status');
+
+      const house1 = document.getElementById('house-1');
+      const house2 = document.getElementById('house-2');
+
+      // Sync coastal profiles
+      coastSelect.addEventListener('change', () => {
+        if (coastSelect.value === 'ria') {
+          slopeStraight.style.opacity = '0';
+          slopeRia.style.opacity = '1';
+          riaGuide.style.opacity = '1';
+        } else {
+          slopeStraight.style.opacity = '1';
+          slopeRia.style.opacity = '0';
+          riaGuide.style.opacity = '0';
+        }
+      });
+
+      // Sync seawall height options
+      wallSelect.addEventListener('change', () => {
+        const val = wallSelect.value;
+        if (val === 'none') {
+          seawall.classList.remove('active');
+          seawall.style.height = '0px';
+          seawallLbl.style.opacity = '0';
+        } else if (val === 'standard') {
+          seawall.classList.add('active');
+          seawall.style.height = '45px'; // representing 5m
+          seawallLbl.textContent = '5m Sea Wall';
+          seawallLbl.style.opacity = '1';
+          seawallLbl.style.bottom = '105px';
+        } else if (val === 'reinforced') {
+          seawall.classList.add('active');
+          seawall.style.height = '80px'; // representing 10m
+          seawallLbl.textContent = '10m Seawall';
+          seawallLbl.style.opacity = '1';
+          seawallLbl.style.bottom = '140px';
+        }
+      });
+
+      triggerBtn.addEventListener('click', () => {
+        // Disable controls
+        triggerBtn.disabled = true;
+        triggerBtn.style.opacity = '0.5';
+        coastSelect.disabled = true;
+        wallSelect.disabled = true;
+        waveSelect.disabled = true;
+
+        // Reset previous classes
+        sky.classList.remove('eq-active');
+        viewport.classList.remove('viewport-shake');
+        wave.classList.remove('wave-active');
+        house1.classList.remove('flooded', 'destroyed');
+        house2.classList.remove('flooded', 'destroyed');
+
+        // Inputs
+        const coast = coastSelect.value;
+        const wall = wallSelect.value;
+        const waveScale = waveSelect.value;
+
+        // Visual mapping parameters
+        let baseHeightPx = waveScale === 'moderate' ? 30 : 60;
+        let isRia = coast === 'ria';
+
+        // Funneling amplification calculation
+        let runupHeightPx = baseHeightPx;
+        if (isRia) {
+          runupHeightPx = Math.floor(baseHeightPx * 2.1); // Wave height doubles in V-shape ria
+        }
+
+        // Seawall height mapping
+        let wallHeightPx = 0;
+        if (wall === 'standard') wallHeightPx = 45;
+        if (wall === 'reinforced') wallHeightPx = 80;
+
+        statusBox.className = 'sim-status-box sim-status-warning';
+        statusBox.innerHTML = `<strong>Earthquake Detected!</strong> A megathrust earthquake has shifted the tectonic seafloor. Generating a ${waveScale === 'moderate' ? 'moderate 3-5m' : 'severe 10-15m'} ocean wave...`;
+
+        // 1. Shake viewport to simulate earthquake
+        viewport.classList.add('viewport-shake');
+        sky.classList.add('eq-active');
+
+        setTimeout(() => {
+          // Stop shaking, propagate tsunami
+          viewport.classList.remove('viewport-shake');
+          statusBox.innerHTML = `<strong>Tsunami Propagating:</strong> Wave is approaching the coast. ${isRia ? 'The narrow V-shape of the Ria Bay is compressing the water, magnifying wave height!' : 'Propagating over flat coastal bathymetry.'}`;
+
+          // Show wave and set its visual height to the calculated run-up height
+          wave.style.height = `${runupHeightPx}px`;
+          wave.classList.add('wave-active');
+
+          // 2. Wave impacts barrier/village after animation travel time
+          setTimeout(() => {
+            sky.classList.remove('eq-active');
+
+            if (wallHeightPx >= runupHeightPx) {
+              // Protected!
+              statusBox.className = 'sim-status-box sim-status-success';
+              statusBox.innerHTML = `<strong>Mitigation Success!</strong> The ${wall === 'standard' ? '5m' : '10m'} seawall completely blocked the ${waveScale === 'moderate' ? 'moderate' : 'extreme'} wave. The village is safe.`;
+            } else {
+              // Overtopped!
+              const difference = runupHeightPx - wallHeightPx;
+
+              if (difference <= 45) {
+                // Partial flood
+                house1.classList.add('flooded');
+                statusBox.className = 'sim-status-box sim-status-warning';
+                statusBox.innerHTML = `<strong>Overtopped!</strong> The tsunami run-up reached equivalent heights exceeding the ${wall === 'none' ? '0m' : wall === 'standard' ? '5m' : '10m'} barrier. Water spilled over, causing partial flooding in the low-lying village.`;
+              } else {
+                // Catastrophic destruction
+                house1.classList.add('destroyed');
+                house2.classList.add('destroyed');
+                statusBox.className = 'sim-status-box sim-status-danger';
+
+                if (isRia) {
+                  statusBox.innerHTML = `<strong>Disaster!</strong> The V-shaped ria coastline concentrated the wave energy, amplifying the tsunami height. The towering wave overtopped the ${wall === 'none' ? '0m' : wall === 'standard' ? '5m' : '10m'} barrier and completely devastated the village. Evacuation was the only viable protection.`;
+                } else {
+                  statusBox.innerHTML = `<strong>Disaster!</strong> The massive wave overwhelmed the ${wall === 'none' ? 'unprotected coast' : wall === 'standard' ? '5m seawall' : '10m seawall'} and demolished the village structures.`;
+                }
+              }
+            }
+
+            // Enable controls
+            triggerBtn.disabled = false;
+            triggerBtn.style.opacity = '1';
+            coastSelect.disabled = false;
+            wallSelect.disabled = false;
+            waveSelect.disabled = false;
+          }, 3000); // Wait for wave travel time (3.0s duration)
+
+        }, 1500); // 1.5s earthquake phase
+      });
+    });
+  </script>
 </body>
 
 </html>
