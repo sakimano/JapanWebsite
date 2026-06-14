@@ -42,6 +42,295 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Interactive Climate Dashboard Widget */
+    .dashboard-container {
+      border: var(--border-gold);
+      background-color: var(--indigo-light);
+      padding: 30px;
+      color: var(--text-light);
+      box-shadow: 8px 8px 0 var(--crimson);
+      border-radius: 4px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    .dashboard-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .dashboard-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background-color: rgba(251, 249, 244, 0.1);
+      border: 1px solid var(--gold);
+      color: var(--text-light);
+      padding: 10px 20px;
+      font-family: var(--font-heading);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background-color: var(--crimson);
+      border-color: var(--crimson);
+      color: var(--text-light);
+    }
+
+    .tab-content {
+      display: none;
+      animation: tabFadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes tabFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .dashboard-info h4 {
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 15px;
+      font-family: var(--font-heading);
+    }
+
+    .dashboard-info p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background-color: rgba(13, 27, 42, 0.4);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 15px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.7;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .chart-panel {
+      background-color: rgba(13, 27, 42, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 20px;
+      border-radius: 4px;
+    }
+
+    .chart-panel-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      color: var(--gold);
+      text-align: center;
+    }
+
+    .bars-chart {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 180px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(251, 249, 244, 0.2);
+      margin-bottom: 8px;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .bar-rect {
+      width: 60%;
+      background: linear-gradient(to top, var(--indigo) 0%, var(--gold) 100%);
+      border-radius: 2px 2px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: height 1s ease-out;
+    }
+
+    .sapporo-bar .bar-rect {
+      background: linear-gradient(to top, #1b263b, #00bfff);
+    }
+
+    .tokyo-bar .bar-rect {
+      background: linear-gradient(to top, #780000, #e5c158);
+    }
+
+    .naha-bar .bar-rect {
+      background: linear-gradient(to top, #780000, #ff4500);
+    }
+
+    .bar-rect:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--indigo);
+      color: var(--text-light);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      border: 1px solid var(--gold);
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .month-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .month-label {
+      font-size: 0.75rem;
+      text-align: center;
+      flex: 1;
+      opacity: 0.7;
+    }
+
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+      font-size: 0.8rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    .sapporo-color {
+      background: #00bfff;
+    }
+
+    .tokyo-color {
+      background: #e5c158;
+    }
+
+    .naha-color {
+      background: #ff4500;
+    }
+
+    /* References section styles */
+    .references-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .references-list li {
+      margin-bottom: 20px;
+      padding-left: 35px;
+      text-indent: -35px;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      border-bottom: 1px solid rgba(13, 27, 42, 0.1);
+      padding-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .references-list li a {
+      color: var(--crimson);
+      word-break: break-all;
+      transition: color 0.3s ease;
+    }
+
+    .references-list li a:hover {
+      color: var(--gold);
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border: var(--border-gold);
+      box-shadow: 6px 6px 0 var(--indigo);
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   </style>
 </head>
 
@@ -63,82 +352,550 @@
     </nav>
   </header>
 
-  <!-- <main style="padding-top: 150px; position: relative; overflow: hidden;">
+  <main style="padding-top: 150px; position: relative; overflow: hidden;">
     <div class="particles-container" data-type="sakura"></div>
     <div class="koi-container"></div>
-    
+
+    <!-- SECTION 1: GLOBAL POSITION AND WEATHER PATTERNS -->
     <section>
       <div class="section-header fade-in">
-        <h2>Climate Zones & Biomes</h2>
+        <h2>Global Position and Weather Patterns</h2>
         <div class="divider"></div>
       </div>
-      
-      <div class="split-layout fade-in">
-        <div class="split-text" style="text-align: center;">
-          <p style="max-width: 800px; margin: 0 auto 30px auto;">Due to its extreme length from north to south, Japan's climate ranges dramatically from the humid continental climate of Hokkaido in the north to the humid subtropical and tropical climates of Okinawa in the south. This vast latitudinal spread creates incredibly diverse biomes, ranging from subalpine coniferous forests to dense subtropical rainforests.</p>
-        </div>
-      </div>
 
-      <div class="cards-grid">
-        <div class="card fade-in">
-          <h3>Typhoons</h3>
-          <p>Japan is frequently struck by typhoons in late summer and early autumn. These massive storm systems bring extreme winds and torrential rains, significantly impacting both human settlements and the physical geography through erosion.</p>
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3>How Japan's Location Shapes Its Weather</h3>
+          <p>
+            Japan is located on the eastern side of Asia and is surrounded by the Pacific Ocean and the Sea of Japan.
+            Because of its location, the country is affected by different wind systems throughout the year. One of the
+            most important is the Westerlies, which move weather systems from west to east across Japan.
+          </p>
+          <p>
+            While researching this topic, I learned that the East Asian Monsoon has a major impact on Japan's climate.
+            In winter, cold air comes from Siberia and picks up moisture as it crosses the Sea of Japan. This is one
+            reason why western Japan receives so much snow. In summer, warm and humid air from the Pacific Ocean brings
+            higher temperatures and frequent rainfall.
+          </p>
+          <p>
+            Japan also experiences a rainy season called Tsuyu and a typhoon season later in the year. Because of these
+            weather patterns, many parts of Japan receive a large amount of precipitation every year. I found it
+            interesting that Japan's location between the Asian continent and the Pacific Ocean plays such a big role in
+            shaping its climate.
+          </p>
         </div>
-        <div class="card fade-in">
-          <h3>Flora & Fauna</h3>
-          <p>Because of its isolation from the mainland, Japan has a high degree of endemism. Native wildlife includes the Japanese macaque (snow monkey), the sika deer, and the red-crowned crane. Forests cover over 60% of the landmass.</p>
+        <div class="split-image">
+          <img src="assets/images/monsoon.jpg" alt="Map showing Japan's latitudinal location and wind belt systems"
+            class="reveal-ink">
         </div>
       </div>
     </section>
 
     <div class="wave-divider"></div>
+
+    <!-- SECTION 2: SEVERE WEATHER -->
     <section class="dark-section">
       <div class="section-header fade-in">
-        <h2>The Four Seasons</h2>
+        <h2>Severe Weather Systems</h2>
         <div class="divider"></div>
-        <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">The changing of the four distinct seasons (Shiki) is a fundamental aspect of Japanese culture, aesthetics, and poetry.</p>
       </div>
 
-      <div class="seasonal-grid">
-        
-        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
-          <img src="assets/images/spring.png" alt="Spring cherry blossoms">
-          <div class="particles-container" data-type="sakura" style="z-index: 1;"></div>
-          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Spring (Haru)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Defined by the brief, spectacular blooming of the sakura (cherry blossoms), moving in a wave from south to north.</p>
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Major Severe Weather Events in Japan</h3>
+          <p>
+            Japan experiences several types of severe weather every year. The most common are typhoons, floods,
+            landslides, and winter snowstorms. Because Japan is surrounded by ocean and has many mountains, these events
+            can have a big impact on communities.
+          </p>
+          <p>
+            One of the most serious weather hazards is typhoons. These storms usually form over the Pacific Ocean and
+            often reach Japan during late summer and early fall. For example, Typhoon Hagibis (2019) caused major
+            flooding and damage across eastern Japan.
+          </p>
+          <p>
+            Heavy rainfall is also common during the Tsuyu rainy season. Combined with steep mountains and short rivers,
+            this can lead to flooding and landslides. In winter, cold air from Siberia brings heavy snowfall to many
+            areas along the Sea of Japan coast.
+          </p>
         </div>
-
-        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
-          <img src="assets/images/summer.png" alt="Summer bamboo forest">
-          <div class="particles-container" data-type="summer" style="z-index: 1;"></div>
-          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Summer (Natsu)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Hot and highly humid, beginning with a rainy season (tsuyu) and characterized by lush, vibrant green forests.</p>
+        <div class="split-image">
+          <img src="assets/images/typhoon.jpg"
+            alt="A Sabo Dam in a mountain valley protecting against debris flows and mudslides" class="reveal-ink">
         </div>
-
-        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
-          <img src="assets/images/autumn.png" alt="Autumn red leaves">
-          <div class="particles-container" data-type="autumn" style="z-index: 1;"></div>
-          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Autumn (Aki)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Famous for 'koyo', the vibrant changing of the autumn foliage, where maple leaves turn deep, fiery reds and golds.</p>
-        </div>
-
-        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
-          <img src="assets/images/winter.png" alt="Winter snow on a temple">
-          <div class="particles-container" data-type="snow" style="z-index: 1;"></div>
-          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Winter (Fuyu)</h3>
-          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Cold and crisp. The western coast and northern regions experience "ocean-effect" snow, creating some of the heaviest snowfalls in the world.</p>
-        </div>
-
       </div>
     </section>
 
-  </main> -->
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 3: CLIMATE CLASSIFICATION -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Climate Classification</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-image">
+          <img src="assets/images/koppen_climate_map.png"
+            alt="Köppen climate classification map of Japan showing Continental, Subtropical, and Tropical zones"
+            class="reveal-ink">
+        </div>
+        <div class="split-text">
+          <h3>The Köppen-Geiger Climate Zones</h3>
+          <p>
+            Japan has several climate zones because it stretches from the cool north to the warm south. According to the
+            Köppen Climate Classification, most of the country has either a humid continental or humid subtropical
+            climate.
+          </p>
+          <p>
+            Hokkaido experiences colder winters with heavy snowfall, while much of Honshu, Shikoku, and Kyushu have
+            warmer temperatures and humid summers. In the far south, Okinawa has a tropical climate with warm weather
+            throughout the year.
+          </p>
+          <p>
+            While researching this topic, I found it interesting that people can experience very different climates
+            depending on where they live in Japan. The climate also affects agriculture, tourism, and daily life across
+            the country.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- INTERACTIVE CLIMATE DASHBOARD -->
+      <div class="dashboard-container fade-in">
+        <div class="dashboard-title">Interactive Climate Dashboard</div>
+        <div class="dashboard-tabs">
+          <button class="tab-btn active" data-tab="sapporo-data">Sapporo (Hokkaido - Dfb)</button>
+          <button class="tab-btn" data-tab="tokyo-data">Tokyo (Honshu - Cfa)</button>
+          <button class="tab-btn" data-tab="naha-data">Naha (Okinawa - Am)</button>
+        </div>
+
+        <!-- Sapporo Data -->
+        <div class="tab-content active" id="sapporo-data">
+          <div class="dashboard-grid">
+            <div class="dashboard-info">
+              <h4>Sapporo Climate Profile (Dfb)</h4>
+              <p>
+                Located in northern Japan, Sapporo is characterized by a humid continental climate with severe, snowy
+                winters. In winter, cold winds from Siberia pick up moisture over the Sea of Japan, dumping feet of
+                snow. Summers are warm and lack the humidity found in southern cities, making it a popular destination.
+              </p>
+              <div class="stats-row">
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Annual Temp</div>
+                  <div class="stat-value">8.9°C (48°F)</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Precipitation</div>
+                  <div class="stat-value">1,100 mm</div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-panel">
+              <div class="chart-panel-title">Average Monthly Precipitation & Temperature Trends</div>
+              <div class="bars-chart sapporo-bar">
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 38%;" data-tooltip="Jan: -3.6°C / 113mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 32%;" data-tooltip="Feb: -3.1°C / 94mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 26%;" data-tooltip="Mar: 0.6°C / 78mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 19%;" data-tooltip="Apr: 7.1°C / 57mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 18%;" data-tooltip="May: 12.4°C / 53mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 16%;" data-tooltip="Jun: 16.7°C / 47mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 27%;" data-tooltip="Jul: 20.5°C / 81mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 42%;" data-tooltip="Aug: 22.3°C / 124mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 46%;" data-tooltip="Sep: 18.1°C / 135mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 37%;" data-tooltip="Oct: 11.8°C / 109mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 35%;" data-tooltip="Nov: 4.9°C / 104mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 38%;" data-tooltip="Dec: -0.9°C / 112mm"></div>
+                </div>
+              </div>
+              <div class="month-labels">
+                <span class="month-label">J</span><span class="month-label">F</span><span class="month-label">M</span>
+                <span class="month-label">A</span><span class="month-label">M</span><span class="month-label">J</span>
+                <span class="month-label">J</span><span class="month-label">A</span><span class="month-label">S</span>
+                <span class="month-label">O</span><span class="month-label">N</span><span class="month-label">D</span>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-color sapporo-color"></div> Precipitation (mm) & Temperature Tooltip
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tokyo Data -->
+        <div class="tab-content" id="tokyo-data">
+          <div class="dashboard-grid">
+            <div class="dashboard-info">
+              <h4>Tokyo Climate Profile (Cfa)</h4>
+              <p>
+                As a representative of the humid subtropical zone, Tokyo experiences four distinct seasons. Summers are
+                hot, sticky, and wet, influenced by maritime tropical air. Winters are cool and dry, with clear skies
+                due to the rain-shadow effect created by the central mountain ranges. High rain spikes occur in early
+                summer (Tsuyu front) and autumn (typhoons).
+              </p>
+              <div class="stats-row">
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Annual Temp</div>
+                  <div class="stat-value">15.4°C (60°F)</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Precipitation</div>
+                  <div class="stat-value">1,530 mm</div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-panel">
+              <div class="chart-panel-title">Average Monthly Precipitation & Temperature Trends</div>
+              <div class="bars-chart tokyo-bar">
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 17%;" data-tooltip="Jan: 5.2°C / 52mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 19%;" data-tooltip="Feb: 5.7°C / 56mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 40%;" data-tooltip="Mar: 8.7°C / 118mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 42%;" data-tooltip="Apr: 13.9°C / 125mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 46%;" data-tooltip="May: 18.2°C / 138mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 57%;" data-tooltip="Jun: 21.4°C / 168mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 52%;" data-tooltip="Jul: 25.0°C / 154mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 57%;" data-tooltip="Aug: 26.4°C / 168mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 71%;" data-tooltip="Sep: 22.8°C / 210mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 67%;" data-tooltip="Oct: 17.5°C / 198mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 31%;" data-tooltip="Nov: 12.1°C / 93mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 17%;" data-tooltip="Dec: 7.6°C / 51mm"></div>
+                </div>
+              </div>
+              <div class="month-labels">
+                <span class="month-label">J</span><span class="month-label">F</span><span class="month-label">M</span>
+                <span class="month-label">A</span><span class="month-label">M</span><span class="month-label">J</span>
+                <span class="month-label">J</span><span class="month-label">A</span><span class="month-label">S</span>
+                <span class="month-label">O</span><span class="month-label">N</span><span class="month-label">D</span>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-color tokyo-color"></div> Precipitation (mm) & Temperature Tooltip
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Naha Data -->
+        <div class="tab-content" id="naha-data">
+          <div class="dashboard-grid">
+            <div class="dashboard-info">
+              <h4>Naha Climate Profile (Am)</h4>
+              <p>
+                Representing the tropical monsoon climate, Naha in Okinawa enjoys hot, humid conditions year-round, with
+                average winter temperatures staying above 17°C. Precipitation is extremely heavy and spikes during the
+                early summer monsoonal rain season and late summer typhoon periods. Subtropical mangroves and coral
+                reefs thrive here.
+              </p>
+              <div class="stats-row">
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Annual Temp</div>
+                  <div class="stat-value">23.1°C (74°F)</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Avg. Precipitation</div>
+                  <div class="stat-value">2,040 mm</div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-panel">
+              <div class="chart-panel-title">Average Monthly Precipitation & Temperature Trends</div>
+              <div class="bars-chart naha-bar">
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 36%;" data-tooltip="Jan: 17.0°C / 107mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 40%;" data-tooltip="Feb: 17.1°C / 120mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 54%;" data-tooltip="Mar: 18.9°C / 161mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 56%;" data-tooltip="Apr: 21.5°C / 165mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 78%;" data-tooltip="May: 24.0°C / 232mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 100%;" data-tooltip="Jun: 26.8°C / 294mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 65%;" data-tooltip="Jul: 28.9°C / 192mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 81%;" data-tooltip="Aug: 28.7°C / 240mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 88%;" data-tooltip="Sep: 27.6°C / 260mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 52%;" data-tooltip="Oct: 25.2°C / 153mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 37%;" data-tooltip="Nov: 22.1°C / 110mm"></div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-rect" style="height: 36%;" data-tooltip="Dec: 18.7°C / 106mm"></div>
+                </div>
+              </div>
+              <div class="month-labels">
+                <span class="month-label">J</span><span class="month-label">F</span><span class="month-label">M</span>
+                <span class="month-label">A</span><span class="month-label">M</span><span class="month-label">J</span>
+                <span class="month-label">J</span><span class="month-label">A</span><span class="month-label">S</span>
+                <span class="month-label">O</span><span class="month-label">N</span><span class="month-label">D</span>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-color naha-color"></div> Precipitation (mm) & Temperature Tooltip
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 4: BIOMES AND SOCIETY -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Forest Biomes & Society</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h3 class="dark-section-text">Different Ecosystems Across Japan</h3>
+          <p>
+            Japan has many different ecosystems because the country stretches a long distance from north to south. In
+            Hokkaido, there are cold conifer forests and snowy landscapes. In central Japan, temperate forests with
+            maple and beech trees are common. Farther south, Okinawa has subtropical forests with palm trees and
+            mangroves.
+          </p>
+          <p>
+            While researching this topic, I learned that these ecosystems influence the way people live in different
+            parts of Japan. For example, northern regions are known for winter activities and dairy farming, while
+            southern islands have a warmer climate and different agricultural products.
+          </p>
+          <p>
+            Even though the environments are different, I think these biomes help unite Japanese society more than
+            divide it. Many traditions, foods, and seasonal celebrations are connected to nature, and people across the
+            country enjoy activities such as cherry blossom viewing in spring and autumn leaf viewing in the fall.
+          </p>
+        </div>
+      </div>
+
+      <!-- THE FOUR SEASONS (SHIKI) GRID -->
+      <div class="section-header fade-in" style="margin-top: 60px;">
+        <h2>The Four Seasons (Shiki)</h2>
+        <div class="divider"></div>
+        <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">The changing of the four distinct seasons is a
+          fundamental aspect of Japanese culture, aesthetics, and poetry.</p>
+      </div>
+
+      <div class="seasonal-grid">
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
+          <img src="assets/images/spring.jpg" alt="Spring cherry blossoms">
+          <div class="particles-container" data-type="sakura" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Spring (Haru)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">While researching Japan's
+            seasons, I learned that spring is most famous for the cherry blossoms, or sakura. The blooming starts in the
+            south and slowly moves north, and many people enjoy spending time outside to see the flowers.</p>
+        </div>
+
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
+          <img src="assets/images/summer-japan.jpg" alt="Summer bamboo forest">
+          <div class="particles-container" data-type="summer" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Summer (Natsu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Summer in Japan is usually
+            hot and humid. I learned that it begins with a rainy season called tsuyu, which brings a lot of rain before
+            the hottest months of the year. The forests become very green during this season.</p>
+        </div>
+
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
+          <img src="assets/images/fall.jpeg" alt="Autumn red leaves">
+          <div class="particles-container" data-type="autumn" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Autumn (Aki)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Autumn is one of my favorite
+            seasons in Japan because of the colorful leaves. I found it interesting that many people travel to see the
+            red and yellow maple leaves, a tradition known as momijigari.</p>
+        </div>
+
+        <div class="season-card fade-in" style="position: relative; overflow: hidden; padding-bottom: 20px;">
+          <img src="assets/images/winter-japan.jpg" alt="Winter snow on a temple">
+          <div class="particles-container" data-type="snow" style="z-index: 1;"></div>
+          <h3 style="color: var(--bg-cream); position: relative; z-index: 2;">Winter (Fuyu)</h3>
+          <p style="color: var(--bg-cream); opacity: 0.8; position: relative; z-index: 2;">Winter can be very different
+            depending on the region. Northern Japan receives a lot of snow, while some southern areas stay relatively
+            mild. I learned that the Sea of Japan helps create some of the heaviest snowfall in the country.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 5: NATIVE PLANTS -->
+    <section>
+      <div class="section-header fade-in">
+        <h2>Native Plants</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout fade-in">
+        <div class="split-text">
+          <h4 style="font-family: var(--font-heading); color: var(--indigo); font-size: 1.3rem; margin-bottom: 10px;">
+            Resources, Food, and Medicine</h4>
+          <p>
+            While researching native plants in Japan, I learned that many of them have been used for food, medicine, and
+            building materials for centuries. One example is bamboo, which is used for tools, crafts, and construction.
+            Young bamboo shoots are also eaten in many traditional dishes.
+          </p>
+          <p>I also found that plants such as wasabi and sansho have been important in Japanese cooking and traditional
+            medicine. Japanese cedar, known as sugi, is another valuable plant because its wood is commonly used to
+            build temples, shrines, and traditional houses.</p>
+
+          <h4 style="font-family: var(--font-heading); color: var(--indigo); font-size: 1.3rem; margin-bottom: 10px;">
+            Poisonous or Dangerous Plants</h4>
+          <p>
+            Not all native plants are harmless. I learned that torikabuto (Japanese monkshood) is one of the most
+            poisonous plants found in Japan. It contains a strong toxin and can be dangerous if mistaken for an edible
+            wild plant.
+          </p>
+          <p>Another interesting example is higanbana (red spider lily). Although it is beautiful and commonly seen near
+            rice fields, its bulbs are poisonous. Learning about these plants showed me how nature can provide useful
+            resources while also requiring people to be careful.</p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/wasabi.png"
+            alt="A vibrant green wasabi plant growing naturally in a clean, rocky mountain stream in Japan"
+            class="reveal-ink">
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+    <!-- SECTION 6: NATIVE ANIMALS -->
+    <section class="dark-section">
+      <div class="section-header fade-in">
+        <h2>Native Animals</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="split-layout reverse fade-in">
+        <div class="split-text">
+          <h4 style="font-family: var(--font-heading); color: var(--gold); font-size: 1.3rem; margin-bottom: 10px;">
+            Resources, Food, and Livelihoods</h4>
+          <p>
+            While researching native animals in Japan, I learned that some species have played an important role in
+            daily life and local traditions. One example is the sika deer, which has historically been used as a source
+            of food and materials. Today, deer are still important in some rural areas and are carefully managed to
+            protect local ecosystems.
+          </p>
+          <p>I also found it interesting that the Japanese honeybee is known for producing honey and helping pollinate
+            plants. Many native animals contribute to agriculture and natural environments, making them valuable
+            resources for local communities.
+          </p>
+
+          <h4 style="font-family: var(--font-heading); color: var(--gold); font-size: 1.3rem; margin-bottom: 10px;">
+            Dangerous or Poisonous Animals</h4>
+          <p>
+            Not all native animals are harmless. One of the most well-known dangerous species is the Asian giant hornet,
+            which has a very painful sting and can be dangerous when disturbed. Japan is also home to several venomous
+            snakes, including the mamushi and the habu, which are found in different parts of the country.
+          </p>
+          <p>
+            While researching this topic, I learned that bear encounters have also become more common in some rural
+            areas. These examples show how Japan's wildlife can be both beneficial and potentially dangerous depending
+            on the situation.
+          </p>
+        </div>
+        <div class="split-image">
+          <img src="assets/images/deer.jpg"
+            alt="A Japanese Serow (Kamoshika) standing in a misty, mossy cedar forest in Japan" class="reveal-ink">
+        </div>
+      </div>
+    </section>
+
+    <div class="wave-divider"></div>
+
+
+
+  </main>
 
   <footer>
     <p>&copy; PS120 Earth Science Project.</p>
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons and contents
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+
+          // Add active class to clicked button and corresponding content
+          btn.classList.add('active');
+          const target = btn.dataset.tab;
+          document.getElementById(target).classList.add('active');
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
